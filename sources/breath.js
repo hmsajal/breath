@@ -1,100 +1,190 @@
-
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button,TouchableOpacity} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
+import Sound from 'react-native-sound'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import BreathModal from './breathModal'
+import AboutModal from './aboutModal'
+
 
 export default class Breath extends Component {
   
-  state={
-    count: 0,
-    breatheInOut:'Breathe',
-    buttonStatus: false,
-    buttonTitle: 'Start',
-    neededCount:0,
-    numberOfCount:0
-  }
-
-  buttonAction(){
-    if(this.state.buttonStatus==false){
-      this.setState({buttonTitle:'Stop'})
-      this.setState({breatheInOut:'Breath In'})
-      setTimeout(()=>{this.setState({breatheInOut:'Breathe Out'})},10000)
-      this.startTimer();
+  constructor(props){
+    super(props);
+    this.state={
+      count: '-',
+      breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
+      breatheBool:2,
+      buttonStatus: false,
+      buttonTitle: '                            Start                            ',
+      timesCountString: 'Times Count',   
+      numberOfCount:0,   
+      totalCount:0,
+      settingsModalVisible:false,
+      aboutModalVisible:false,
+      breathingTextStyle:{
+          fontSize:19,
+          color:'#666666',       
+          fontStyle:'italic',
+          fontFamily:'time',          
+      }
     }
-    else{
-      this.setState({buttonTitle:'Start'})
-      this.stopTimer();
-    }
-    this.setState({buttonStatus:!this.state.buttonStatus})
-  }
- 
-  startTimer=()=>{
-      
-      shortInterval= setInterval(() => {
-         this.setState({count:this.state.count+1})            
-      }, 1000);      
-
-      breathInInterval= setInterval(() => {
-          this.setState({breatheInOut:'Breathe In'})   
-          this.setState({numberOfCount:this.state.numberOfCount+1})  
-
-          setTimeout(()=>{
-          this.setState({breatheInOut:'Breathe Out'})
-          },10000);   
-
-      }, 20000); 
-     
-  }
-
-  stopTimer=()=>{
-    clearInterval(breathInInterval);
-    clearInterval(shortInterval);
-    this.setState({count:0,numberOfCount:0,breatheInOut:'Breathe'})
   }
   
+  sound=new Sound('chinup.mp3')
+ 
+    buttonAction(){      
+        if(this.state.buttonStatus==false){            
+            this.setState({buttonTitle:'                            Stop                              ',
+                           buttonStatus:true,breatheBool:0,count:0,numberOfCount:0,                       
+                           breathingTextStyle:{
+                              fontSize:28,
+                              color:'#666666',                              
+                              fontStyle:'italic',
+                              fontFamily:'times'
+                            }
+                          })      
+            this.setState({timesCountString:'Times Count: 0'})  
+            
+            child = setInterval(()=>{
+              this.setState({count:this.state.count+1});
+            },1000);
+
+            timeOut = setTimeout(()=>
+              {  
+                  clearInterval(child)
+                  this.sound.play()                                                       
+                  this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
+                                totalCount:this.state.totalCount+1,breatheBool:3,count:''
+                                }) 
+                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                                            
+              },  10200);
+
+            root = setInterval(()=>{
+                
+                this.setState({breatheBool:this.state.totalCount%2,count:0})
+                
+                child = setInterval(()=>{
+                  this.setState({count:this.state.count+1});                  
+                },1000);
+
+                timeOut = setTimeout(()=>
+                  {  
+                      clearInterval(child)
+                      this.sound.play()                                     
+                      this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
+                                    totalCount:this.state.totalCount+1,breatheBool:3,count:''
+                                    })  
+                      this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})                                                               
+                  },  10200)              
+            }, 11000)
+                        
+        }
+
+        else{
+          clearInterval(child)            
+          clearInterval(root)
+          clearTimeout(timeOut)
+          this.setState({buttonTitle:'                            Start                            ',
+                         buttonStatus:false,breatheBool:2,count:'-',totalCount:0,
+                         timesCountString:'Previous number of spells: '+this.state.numberOfCount,
+                         breathingTextStyle:{
+                            fontSize:19,
+                            color:'#666666',       
+                            fontStyle:'italic',   
+                            fontFamily:'time'
+                        }
+                          })            
+            }
+    }
+
+  
+
   render() {
-    
+    const {height,width}=Dimensions.get('window')
+    const w=width
     return (
       <View style={styles.container}>
-          <View style={styles.breathingView}><Text  style={{fontSize:26,color:'#4B4E6DEE'}}>{this.state.breatheInOut}</Text></View>  
-          <View style={styles.timerView}><Text style={{fontSize:40,color:'#000000aa'}}>{this.state.count}</Text></View>      
-          <View style={styles.countView}><Text style={{fontSize:18,}}>Times Count: {this.state.numberOfCount}</Text></View>
-          <View style={styles.topacityView}><TouchableOpacity><Text style={{fontSize:22,color:'#009933aa',backgroundColor:'#00993333'}}> Compensate </Text></TouchableOpacity></View>
-          <View style={styles.buttonView}><Button title={this.state.buttonTitle} color='#009933' onPress={()=>this.buttonAction()}></Button></View>
+          <View style={styles.firstView} width={w-30}>
+              <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})}}>
+                <Icon name='settings-outline' size={24} color='#666666'/>                  
+              </TouchableOpacity>
+              <View style={styles.name}>
+                <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#118ab2'}}>Happy Breathing</Text>
+              </View>
+              
+              <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})}}>
+                <Icon name='information-outline' size={24} color='#666666'/>
+              </TouchableOpacity>
+          </View>
+          <View style={styles.breathingInOutView} width={w-40}>
+               <Text  style={this.state.breathingTextStyle}>{this.state.breatheInOut[this.state.breatheBool]}</Text> 
+          </View>    
+          <View style={styles.breathingTimerView}> 
+               <Text  style={{fontSize:36,fontFamily:'times'}}>{this.state.count}</Text>
+          </View>      
+          
+          <View style={styles.countView}>
+               <Text style={{fontSize:24,fontFamily:'cursive',}}> {this.state.timesCountString}  </Text>              
+          </View>          
+          <View style={styles.buttonView}><Button title={this.state.buttonTitle} color='#228888' onPress={()=>this.buttonAction()}></Button></View>
+          
+          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={()=>{this.setState({settingsModalVisible:false})}}/>
+          <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
       </View>
     );
-
   }
+
 }
 
 const styles=StyleSheet.create({
     
     container:{
-        flex:1,         
+        flex:1,    
+        alignItems:'center',
+        backgroundColor:'#cccc77'  
     },
-    breathingView:{
-        flex:.25,
-        justifyContent:'flex-end',
+    firstView:{
+        flex:.12,
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center'
+    },
+    name:{      
+      flex:.8,    
+      alignItems:'center'
+    },
+    settings:{
+        flex:.1,        
+        height:'100%',
+        justifyContent:'center',
+        alignItems:'center',            
+    },
+    about:{
+        flex:.1,
+        height:'100%',
+        justifyContent:'center',
+        alignItems:'center',              
+    },
+    breathingInOutView:{
+      flex:.2,     
+      justifyContent:'center',   
+      alignItems:'center',    
+    },
+    breathingTimerView:{
+        flex:.36,   
+        justifyContent:'center',     
         alignItems:'center',           
     },
-    timerView:{
-        flex:.2,
-        justifyContent:'flex-end',
-        alignItems:'center',       
-    },
     countView:{
-        flex:.2,
+        flex:.12,
+        flexDirection:'row',
         justifyContent:'center',
         alignItems:'center',
     },    
-    topacityView:{
-      flex:.15,
-      justifyContent:'center',
-      alignItems:'center',
-    },
     buttonView:{
       flex:.2,
       justifyContent:'center',
-      alignItems:'center',
+      alignItems:'center',      
     }
 
 })
