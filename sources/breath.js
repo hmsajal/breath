@@ -32,8 +32,8 @@ export default class Breath extends Component {
   
   sound=new Sound('chinup.mp3')
  
-    buttonAction(){      
-        if(this.state.buttonStatus==false){            
+    startButtonAction(){      
+
             this.setState({buttonTitle:'                            Stop                              ',
                            buttonStatus:true,breatheBool:0,count:0,numberOfCount:0,                       
                            breathingTextStyle:{
@@ -76,11 +76,11 @@ export default class Breath extends Component {
                                     })  
                       this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})                                                               
                   },  10200)              
-            }, 11000)
-                        
-        }
+            }, 11000)                      
+    }
 
-        else{
+    stopButtonAction(){
+      
           clearInterval(child)            
           clearInterval(root)
           clearTimeout(timeOut)
@@ -94,10 +94,8 @@ export default class Breath extends Component {
                             fontFamily:'time'
                         }
                           })            
-            }
-    }
+    }    
 
-  
 
   render() {
     const {height,width}=Dimensions.get('window')
@@ -105,14 +103,21 @@ export default class Breath extends Component {
     return (
       <View style={styles.container}>
           <View style={styles.firstView} width={w-30}>
-              <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})}}>
-                <Icon name='settings-outline' size={24} color='#666666'/>                  
+              <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})
+                                                                     if(this.state.buttonStatus==true) this.stopButtonAction() 
+                                                                     }}
+              >
+                 <Icon name='settings-outline' size={24} color='#666666'/>                  
               </TouchableOpacity>
+
               <View style={styles.name}>
                 <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#118ab2'}}>Happy Breathing</Text>
               </View>
               
-              <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})}}>
+              <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})
+                                                                  if(this.state.buttonStatus==true) this.stopButtonAction()
+                                                                     }}
+              >
                 <Icon name='information-outline' size={24} color='#666666'/>
               </TouchableOpacity>
           </View>
@@ -126,7 +131,15 @@ export default class Breath extends Component {
           <View style={styles.countView}>
                <Text style={{fontSize:24,fontFamily:'cursive',}}> {this.state.timesCountString}  </Text>              
           </View>          
-          <View style={styles.buttonView}><Button title={this.state.buttonTitle} color='#228888' onPress={()=>this.buttonAction()}></Button></View>
+          <View style={styles.buttonView}>
+            <Button title={this.state.buttonTitle} color='#228888' onPress={()=>{
+                                                                                 if(this.state.buttonStatus==false)
+                                                                                    this.startButtonAction()
+                                                                                 else this.stopButtonAction()  
+                                                                                }}
+            >                                                                           
+            </Button>
+          </View>
           
           <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={()=>{this.setState({settingsModalVisible:false})}}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
