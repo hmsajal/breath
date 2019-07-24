@@ -17,8 +17,12 @@ export default class Breath extends Component {
       buttonTitle: '                            Start                            ',
       timesCountString: 'Times Count',   
       numberOfCount:0,   
+<<<<<<< HEAD
       totalCount:0,    
       iniProgressVal:0,  
+=======
+      totalCount:0,      
+>>>>>>> fe57a6c... conditional rendering apply hobe
       increProgressVal:[.01,-.01],
       settingsModalVisible:false,         
       aboutModalVisible:false,
@@ -30,6 +34,7 @@ export default class Breath extends Component {
           fontFamily:'time',          
       }
     }
+<<<<<<< HEAD
     this.barStart=this.barStart.bind(this)
   }  
   progressInstance = new Progress()
@@ -37,6 +42,10 @@ export default class Breath extends Component {
   barStart(){
 
   }
+=======
+  }  
+ 
+>>>>>>> fe57a6c... conditional rendering apply hobe
     startButtonAction(){      
 
             this.setState({buttonTitle:'                            Stop                              ',
@@ -49,7 +58,11 @@ export default class Breath extends Component {
                             }
                           })      
             this.setState({timesCountString:'Times Count: 0'})  
+<<<<<<< HEAD
             this.setState({progressCompVar:<Progress/>})            
+=======
+            this.setState({progressCompVar:<Progress iniProgress={0} increProgress={.01}/>})
+>>>>>>> fe57a6c... conditional rendering apply hobe
 
             timeOut = setTimeout(()=>
               {                                                                                          
@@ -60,11 +73,17 @@ export default class Breath extends Component {
               },  10300);
 
             root = setInterval(()=>{
+<<<<<<< HEAD
                 this.setState({iniProgressVal:this.state.iniProgressVal+1})                 
                 this.setState({breatheBool:this.state.totalCount%2})
 
                 this.progressInstance.mountFunc(this.state.iniProgressVal%2,this.state.increProgressVal[this.state.iniProgressVal%2])
                 
+=======
+                this.setState({iniProgressVal:1})                 
+                this.setState({breatheBool:this.state.totalCount%2})
+                this.setState({progressCompVar:<Progress iniProgress={(this.state.iniProgressVal%2)} increProgress={this.state.increProgressVal[(this.state.iniProgressVal%2)]}/>})
+>>>>>>> fe57a6c... conditional rendering apply hobe
 
                 timeOut = setTimeout(()=>
                   {                                                                
@@ -89,8 +108,12 @@ export default class Breath extends Component {
                             color:'#666666',       
                             fontStyle:'italic',   
                             fontFamily:'time'
+<<<<<<< HEAD
                          },
                          iniProgressVal:0
+=======
+                         }
+>>>>>>> fe57a6c... conditional rendering apply hobe
                        })            
     }    
 
