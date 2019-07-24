@@ -17,7 +17,8 @@ export default class Breath extends Component {
       buttonTitle: '                            Start                            ',
       timesCountString: 'Times Count',   
       numberOfCount:0,   
-      totalCount:0,      
+      totalCount:0,    
+      iniProgressVal:0,  
       increProgressVal:[.01,-.01],
       settingsModalVisible:false,         
       aboutModalVisible:false,
@@ -54,7 +55,7 @@ export default class Breath extends Component {
               },  10300);
 
             root = setInterval(()=>{
-                this.setState({iniProgressVal:1})                 
+                this.setState({iniProgressVal:this.state.iniProgressVal+1})                 
                 this.setState({breatheBool:this.state.totalCount%2})
                 this.setState({progressCompVar:<Progress iniProgress={(this.state.iniProgressVal%2)} increProgress={this.state.increProgressVal[(this.state.iniProgressVal%2)]}/>})
 
@@ -81,7 +82,8 @@ export default class Breath extends Component {
                             color:'#666666',       
                             fontStyle:'italic',   
                             fontFamily:'time'
-                         }
+                         },
+                         iniProgressVal:0
                        })            
     }    
 
