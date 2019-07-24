@@ -1,26 +1,27 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
-import Sound from 'react-native-sound'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
-
+import Progress from './progress'
 
 export default class Breath extends Component {
   
   constructor(props){
     super(props);
-    this.state={
-      count: '-',
+    this.state={      
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
       buttonTitle: '                            Start                            ',
       timesCountString: 'Times Count',   
       numberOfCount:0,   
-      totalCount:0,
-      settingsModalVisible:false,
+      totalCount:0,      
+      increProgressVal:[.01,-.01],
+      settingsModalVisible:false,         
       aboutModalVisible:false,
+      progressCompVar:<View/>,
       breathingTextStyle:{
           fontSize:19,
           color:'#666666',       
@@ -28,14 +29,12 @@ export default class Breath extends Component {
           fontFamily:'time',          
       }
     }
-  }
-  
-  sound=new Sound('chinup.mp3')
+  }  
  
     startButtonAction(){      
 
             this.setState({buttonTitle:'                            Stop                              ',
-                           buttonStatus:true,breatheBool:0,count:0,numberOfCount:0,                       
+                           buttonStatus:true,breatheBool:0,numberOfCount:0,                                                   
                            breathingTextStyle:{
                               fontSize:28,
                               color:'#666666',                              
@@ -44,59 +43,49 @@ export default class Breath extends Component {
                             }
                           })      
             this.setState({timesCountString:'Times Count: 0'})  
-            
-            child = setInterval(()=>{
-              this.setState({count:this.state.count+1});
-            },1000);
+            this.setState({progressCompVar:<Progress iniProgress={0} increProgress={.01}/>})
 
             timeOut = setTimeout(()=>
-              {  
-                  clearInterval(child)
-                  this.sound.play()                                                       
+              {                                                                                          
                   this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
-                                totalCount:this.state.totalCount+1,breatheBool:3,count:''
+                                totalCount:this.state.totalCount+1,breatheBool:3,                                
                                 }) 
                   this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                                            
-              },  10200);
+              },  10300);
 
             root = setInterval(()=>{
-                
-                this.setState({breatheBool:this.state.totalCount%2,count:0})
-                
-                child = setInterval(()=>{
-                  this.setState({count:this.state.count+1});                  
-                },1000);
+                this.setState({iniProgressVal:1})                 
+                this.setState({breatheBool:this.state.totalCount%2})
+                this.setState({progressCompVar:<Progress iniProgress={(this.state.iniProgressVal%2)} increProgress={this.state.increProgressVal[(this.state.iniProgressVal%2)]}/>})
 
                 timeOut = setTimeout(()=>
-                  {  
-                      clearInterval(child)
-                      this.sound.play()                                     
+                  {                                                                
                       this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
-                                    totalCount:this.state.totalCount+1,breatheBool:3,count:''
+                                    totalCount:this.state.totalCount+1,breatheBool:3,                                    
                                     })  
                       this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})                                                               
-                  },  10200)              
+                  },  10300)              
             }, 11000)                      
     }
 
     stopButtonAction(){
-      
-          clearInterval(child)            
+                    
           clearInterval(root)
-          clearTimeout(timeOut)
+          clearTimeout(timeOut)          
           this.setState({buttonTitle:'                            Start                            ',
-                         buttonStatus:false,breatheBool:2,count:'-',totalCount:0,
+                         buttonStatus:false,breatheBool:2,totalCount:0,                         
                          timesCountString:'Previous number of spells: '+this.state.numberOfCount,
+                         progressCompVar:<View/>,                         
                          breathingTextStyle:{
                             fontSize:19,
                             color:'#666666',       
                             fontStyle:'italic',   
                             fontFamily:'time'
-                        }
-                          })            
+                         }
+                       })            
     }    
 
-
+    
   render() {
     const {height,width}=Dimensions.get('window')
     const w=width
@@ -111,7 +100,7 @@ export default class Breath extends Component {
               </TouchableOpacity>
 
               <View style={styles.name}>
-                <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#118ab2'}}>Happy Breathing</Text>
+                <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#11aaaa'}}>Happy Breathing</Text>
               </View>
               
               <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})
@@ -123,16 +112,17 @@ export default class Breath extends Component {
           </View>
           <View style={styles.breathingInOutView} width={w-40}>
                <Text  style={this.state.breathingTextStyle}>{this.state.breatheInOut[this.state.breatheBool]}</Text> 
-          </View>    
+          </View>  
+
           <View style={styles.breathingTimerView}> 
-               <Text  style={{fontSize:36,fontFamily:'times'}}>{this.state.count}</Text>
+               {this.state.progressCompVar}
           </View>      
           
           <View style={styles.countView}>
                <Text style={{fontSize:24,fontFamily:'cursive',}}> {this.state.timesCountString}  </Text>              
           </View>          
           <View style={styles.buttonView}>
-            <Button title={this.state.buttonTitle} color='#228888' onPress={()=>{
+            <Button title={this.state.buttonTitle} color='#11aaaa' onPress={()=>{
                                                                                  if(this.state.buttonStatus==false)
                                                                                     this.startButtonAction()
                                                                                  else this.stopButtonAction()  
