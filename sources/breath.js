@@ -30,8 +30,13 @@ export default class Breath extends Component {
           fontFamily:'time',          
       }
     }
+    this.barStart=this.barStart.bind(this)
   }  
- 
+  progressInstance = new Progress()
+
+  barStart(){
+
+  }
     startButtonAction(){      
 
             this.setState({buttonTitle:'                            Stop                              ',
@@ -44,7 +49,7 @@ export default class Breath extends Component {
                             }
                           })      
             this.setState({timesCountString:'Times Count: 0'})  
-            this.setState({progressCompVar:<Progress iniProgress={0} increProgress={.01}/>})
+            this.setState({progressCompVar:<Progress/>})            
 
             timeOut = setTimeout(()=>
               {                                                                                          
@@ -57,7 +62,9 @@ export default class Breath extends Component {
             root = setInterval(()=>{
                 this.setState({iniProgressVal:this.state.iniProgressVal+1})                 
                 this.setState({breatheBool:this.state.totalCount%2})
-                this.setState({progressCompVar:<Progress iniProgress={(this.state.iniProgressVal%2)} increProgress={this.state.increProgressVal[(this.state.iniProgressVal%2)]}/>})
+
+                this.progressInstance.mountFunc(this.state.iniProgressVal%2,this.state.increProgressVal[this.state.iniProgressVal%2])
+                
 
                 timeOut = setTimeout(()=>
                   {                                                                
@@ -146,7 +153,8 @@ const styles=StyleSheet.create({
     container:{
         flex:1,    
         alignItems:'center',
-        backgroundColor:'#cccc77'  
+        // backgroundColor:'#cccc77'  
+        backgroundColor:'#ffffff'
     },
     firstView:{
         flex:.12,
