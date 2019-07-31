@@ -144,8 +144,7 @@ const styles=StyleSheet.create({
     container:{
         flex:1,    
         alignItems:'center',
-        // backgroundColor:'#cccc77'  
-        backgroundColor:'#ffffff'
+        backgroundColor:'#cccc77'  
     },
     firstView:{
         flex:.12,
