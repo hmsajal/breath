@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import * as Test from 'react-native-progress'
+import Sound from 'react-native-sound'
 
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
-import Bar from 'react-native-progress/Bar'
-import Sound from 'react-native-sound'
+
 
 export default class Breath extends Component {
   
@@ -19,7 +20,7 @@ export default class Breath extends Component {
       timesCountString: 'Times Count',   
       numberOfCount:0,   
       totalCount:0,  
-      iniProgressVal:0,    
+      initialProgress:0,    
       increProgressVal:[.01,-.01],
       barProgress:0,
       settingsModalVisible:false,         
@@ -33,6 +34,13 @@ export default class Breath extends Component {
     },
     sound=new Sound('chinup.mp3')
   }  
+
+   timerViewRendering(){
+     return(this.state.buttonStatus==false? <View/>:
+           <Test.Circle progress={this.state.barProgress} size={120} thickness={20}
+                       direction={"clockwise"} color='#117777' strokeCap='butt' 
+          />)
+   }
  
     startButtonAction(){      
 
@@ -49,10 +57,9 @@ export default class Breath extends Component {
             
             child=setInterval(()=>{
                   this.setState({barProgress:this.state.barProgress+.01});
-                  if(this.state.barProgress==this.state.unmountVar) 
-                  {
-                      clearInterval(child)
-                      this.sound.play()
+                  if(this.state.barProgress>=1) 
+                  {                  
+                      clearInterval(child)                                                               
                   }
             },100);
 
@@ -65,17 +72,19 @@ export default class Breath extends Component {
               },  10300);
 
             root = setInterval(()=>{
-                this.setState({iniProgressVal:this.state.iniProgressVal+1,barProgress:(this.state.iniProgressVal%2),
-                               increProgressVal:this.state.increProgressVal[this.state.iniProgressVal%2]
-                              })                                 
+              console.log('first progress: '+ this.state.barProgress)
+                this.setState({initialProgress:this.state.initialProgress+1})     
+                this.setState({increment:this.state.increProgressVal[this.state.initialProgress%2]}) 
+                this.setState({barProgress:this.state.initialProgress%2})
+              console.log('setted progress: '+this.state.barProgress)
                 this.setState({breatheBool:this.state.totalCount%2})
                 
                 child=setInterval(()=>{
-                      this.setState({barProgress:this.state.barProgress+this.state.increProgressVal});
-                      if(this.state.barProgress==(this.state.iniProgressVal+1)%2) 
+                      this.setState({barProgress:this.state.barProgress+this.state.increment});
+                      if(this.state.barProgress<=0||this.state.barProgress>=1)
                       {
                           clearInterval(child)
-                          this.sound.play()
+              console.log('hey mama'+ this.state.barProgress)
                       }
                 },100);
                 timeOut = setTimeout(()=>
@@ -83,13 +92,15 @@ export default class Breath extends Component {
                       this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
                                     totalCount:this.state.totalCount+1,breatheBool:3,                                    
                                     })  
-                      this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})                                                               
+                      this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})     
+                                                                                
                   },  10300)              
             }, 11000)                      
     }
 
     stopButtonAction(){
                     
+          clearInterval(child)
           clearInterval(root)
           clearTimeout(timeOut)          
           this.setState({buttonTitle:'                            Start                            ',
@@ -134,8 +145,8 @@ export default class Breath extends Component {
                <Text  style={this.state.breathingTextStyle}>{this.state.breatheInOut[this.state.breatheBool]}</Text> 
           </View>  
 
-          <View style={styles.breathingTimerView}> 
-               <Bar width={210} height={75} progress={this.state.barProgress} color='#117777'/>
+          <View style={styles.breathingTimerView}>               
+               {this.timerViewRendering()}
           </View>      
           
           <View style={styles.countView}>
