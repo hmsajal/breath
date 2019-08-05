@@ -20,8 +20,7 @@ export default class Breath extends Component {
       timesCountString: 'Times Count',   
       numberOfCount:0,   
       totalCount:0,  
-      initialProgress:0,    
-      increProgressVal:[.01,-.01],
+      initialProgress:0,          
       barProgress:0,
       settingsModalVisible:false,         
       aboutModalVisible:false,      
@@ -36,10 +35,20 @@ export default class Breath extends Component {
   }  
 
    timerViewRendering(){
-     return(this.state.buttonStatus==false? <View/>:
-           <Test.Circle progress={this.state.barProgress} size={120} thickness={20}
-                       direction={"clockwise"} color='#117777' strokeCap='butt' 
-          />)
+     return(
+              this.state.buttonStatus==false
+                          ? 
+                       <View/>
+                          :
+            ( (this.state.initialProgress)==0 
+                          ?
+              <Test.Circle progress={this.state.barProgress} size={150} thickness={17}
+                            direction="clockwise" color='#117777' strokeCap='butt'/> 
+                          :
+              <Test.Circle progress={this.state.barProgress} size={150} thickness={17} borderColor='117777'
+                           direction='clockwise' color='#cccc77' strokeCap='butt' unfilledColor='117777'/>     
+             )
+           )
    }
  
     startButtonAction(){      
@@ -73,15 +82,15 @@ export default class Breath extends Component {
 
             root = setInterval(()=>{
               console.log('first progress: '+ this.state.barProgress)
-                this.setState({initialProgress:this.state.initialProgress+1})     
-                this.setState({increment:this.state.increProgressVal[this.state.initialProgress%2]}) 
-                this.setState({barProgress:this.state.initialProgress%2})
+              this.setState({barProgress:0}) 
+                this.setState({initialProgress:(this.state.initialProgress+1)%2})   
+                                              
               console.log('setted progress: '+this.state.barProgress)
                 this.setState({breatheBool:this.state.totalCount%2})
                 
                 child=setInterval(()=>{
-                      this.setState({barProgress:this.state.barProgress+this.state.increment});
-                      if(this.state.barProgress<=0||this.state.barProgress>=1)
+                      this.setState({barProgress:this.state.barProgress+.01});
+                      if(this.state.barProgress>=1)
                       {
                           clearInterval(child)
               console.log('hey mama'+ this.state.barProgress)
