@@ -70,7 +70,7 @@ export default class Breath extends Component {
    }  
 
    setTimeOutFunction(){
-          console.log(this.state.barProgress)
+          
           setTimeout(()=>
               {                                                                              
                   this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})
