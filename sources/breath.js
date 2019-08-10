@@ -56,17 +56,16 @@ export default class Breath extends Component {
            )
    }
 
-   manageTimeAll(callBack){
+   manageTimeAll(){
 
       child=setInterval(()=>{
           this.setState({barProgress:this.state.barProgress+this.state.increment});
           if(this.state.barProgress<=0||this.state.barProgress>=1)
             {
                 clearInterval(child)    
+                this.setTimeOutFunction()
             }            
       },100);
-
-      callBack()
    }  
 
    setTimeOutFunction(){
@@ -79,7 +78,6 @@ export default class Breath extends Component {
                   this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                                            
               },  400);
    }
-
 
    startButtonAction(){  
             this.setState({buttonTitle:'                            Stop                              ',})     
@@ -95,7 +93,7 @@ export default class Breath extends Component {
             this.setState({timesCountString:'Times Count: 0'})  
             this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})
             
-            this.manageTimeAll(this.setTimeOutFunction)      
+            this.manageTimeAll()      
 
             root = setInterval(()=>{       
                         
@@ -104,7 +102,7 @@ export default class Breath extends Component {
                 this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})                                                          
                 this.setState({breatheBool:this.state.totalCount%2})                                   
               
-            this.manageTimeAll(this.setTimeOutFunction)
+            this.manageTimeAll()
 
             }, 6000)                      
     }
