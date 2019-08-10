@@ -21,7 +21,8 @@ export default class Breath extends Component {
       numberOfCount:0,   
       totalCount:0,  
       initialProgress:0,      
-      increProgressVal:[.01,-.01],    
+      increProgressVal:[.02,-.02],    
+      increment:0,
       barProgress:0,
       settingsModalVisible:false,         
       aboutModalVisible:false,      
@@ -31,7 +32,8 @@ export default class Breath extends Component {
           fontStyle:'italic',
           fontFamily:'time',          
       }
-    },
+    },    
+    this.setTimeOutFunction=this.setTimeOutFunction.bind(this)
     sound=new Sound('chinup.mp3')
   }  
 
@@ -54,78 +56,78 @@ export default class Breath extends Component {
            )
    }
 
+   manageTimeAll(callBack){
 
-    startButtonAction(){      
+      child=setInterval(()=>{
+          this.setState({barProgress:this.state.barProgress+this.state.increment});
+          if(this.state.barProgress<=0||this.state.barProgress>=1)
+            {
+                clearInterval(child)    
+            }            
+      },100);
 
-            this.setState({buttonTitle:'                            Stop                              ',
-                           buttonStatus:true,breatheBool:0,numberOfCount:0,                                                   
-                           breathingTextStyle:{
-                              fontSize:28,
-                              color:'#666666',                              
-                              fontStyle:'italic',
-                              fontFamily:'times'
-                            }
-                          })      
-            this.setState({timesCountString:'Times Count: 0'})  
-            
-            child=setInterval(()=>{
-                  this.setState({barProgress:this.state.barProgress+.01});                  
-                  if(this.state.barProgress>=1) 
-                  {                  
-                      clearInterval(child)                                                               
-                  }
-            },100);
+      callBack()
+   }  
 
-            timeOut = setTimeout(()=>
+   setTimeOutFunction(){
+          console.log(this.state.barProgress)
+          setTimeout(()=>
               {                                                                              
-                  this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
-                                totalCount:this.state.totalCount+1,breatheBool:3,                                
-                                }) 
+                  this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})
+                  this.setState({totalCount:this.state.totalCount+1})         
+                  this.setState({breatheBool:3})                                                  
                   this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                                            
-              },  10300);
+              },  400);
+   }
+
+
+   startButtonAction(){  
+            this.setState({buttonTitle:'                            Stop                              ',})     
+            this.setState({buttonStatus:true})
+            this.setState({breatheBool:0})            
+            this.setState({breathingTextStyle:{
+                                                fontSize:28,
+                                                color:'#666666',                              
+                                                fontStyle:'italic',
+                                                fontFamily:'times'
+                                              }
+                          })
+            this.setState({timesCountString:'Times Count: 0'})  
+            this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})
+            
+            this.manageTimeAll(this.setTimeOutFunction)      
 
             root = setInterval(()=>{       
                         
                 this.setState({initialProgress:(this.state.initialProgress+1)%2}) 
                 this.setState({barProgress:this.state.initialProgress})   
                 this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})                                                          
-                this.setState({breatheBool:this.state.totalCount%2})
-                
-                child=setInterval(()=>{
-                    this.setState({barProgress:this.state.barProgress+this.state.increment});
-                    if(this.state.barProgress<=0||this.state.barProgress>=1)
-                      {
-                          clearInterval(child)
+                this.setState({breatheBool:this.state.totalCount%2})                                   
               
-                      }
-                      
-                },100);
-                timeOut = setTimeout(()=>
-                  {     console.log('hey mama '+ this.state.barProgress)                                                   
-                      this.setState({numberOfCount:this.state.numberOfCount+this.state.totalCount%2,   
-                                    totalCount:this.state.totalCount+1,breatheBool:3,                                    
-                                    })  
-                      this.setState({timesCountString:'Times Count:  '+this.state.numberOfCount})     
-                                                                                
-                  },  10300)              
-            }, 11000)                      
+            this.manageTimeAll(this.setTimeOutFunction)
+
+            }, 6000)                      
     }
 
-    stopButtonAction(){
-                    
+    stopButtonAction(){                 
           clearInterval(child)
           clearInterval(root)
-          clearTimeout(timeOut)          
+          clearTimeout(this.setTimeOutFunction)          
           this.setState({buttonTitle:'                            Start                            ',
-                         buttonStatus:false,breatheBool:2,totalCount:0,                         
+                         buttonStatus:false,
+                         breatheBool:2,
+                         totalCount:0,                         
                          timesCountString:'Previous number of spells: '+this.state.numberOfCount,                                                
                          breathingTextStyle:{
                             fontSize:19,
                             color:'#666666',       
                             fontStyle:'italic',   
                             fontFamily:'time'
-                         }
-                         ,barProgress:0
+                         },
+                         barProgress:0,
+                         initialProgress:0,
+                         increment:0,
+                         numberOfCount:0
                        })            
     }    
 
