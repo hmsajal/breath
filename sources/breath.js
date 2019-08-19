@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions,ImageBackground} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Test from 'react-native-progress'
 import Sound from 'react-native-sound'
@@ -9,21 +9,26 @@ import AboutModal from './aboutModal'
 
 
 export default class Breath extends Component {
-  
+
   constructor(props){
-    super(props);
-    this.state={      
+    super(props);    
+
+    this.width = Dimensions.get('window').width
+    this.w = this.width*.5
+
+    this.state={  
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
       buttonTitle: '                            Start                            ',
-      timesCountString: 'Times Count',   
+      timesCountString: '',   
       numberOfCount:0,   
       totalCount:0,  
       initialProgress:0,      
-      increProgressVal:[.02,-.02],    
+      increProgressVal:[.01,-.01],    
       increment:0,
       barProgress:0,
+      duration:5,
       settingsModalVisible:false,         
       aboutModalVisible:false,      
       breathingTextStyle:{
@@ -41,17 +46,22 @@ export default class Breath extends Component {
      return(
               this.state.buttonStatus==false
                           ? 
-                       <View/>
+              
+              <Text style={{fontSize:120,fontFamily:'sans-serif-thin',fontStyle:'italic'}}>{this.state.duration}s</Text>             
                           :
             ( (this.state.initialProgress)==0 
                           ?
               <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"              
-                           direction="clockwise" color='#117777' strokeCap='butt' borderWidth={0}                            
-                            /> 
+                           direction="clockwise" color='#119977' strokeCap='round' borderWidth={0} showsText={true}
+                           formatText={(progress)=>{return(Math.round(progress*this.state.duration))}}
+                           textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
+              /> 
                           :
               <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"
-                           direction='counter-clockwise' color='#117777' strokeCap='butt' borderWidth={0}
-                            />     
+                           direction='counter-clockwise' color='#119977' strokeCap='round' borderWidth={0} showsText={true}
+                           formatText={(progress)=>{return(5-Math.round(progress*this.state.duration))}}
+                           textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
+              />     
              )
            )
    }
@@ -63,21 +73,23 @@ export default class Breath extends Component {
           if(this.state.barProgress<=0||this.state.barProgress>=1)
             {
                 clearInterval(child)    
-                this.setTimeOutFunction()
+
+                timeOut= setTimeout(()=>{
+                     this.setTimeOutFunction()    
+                },300)
+                         
             }            
-      },100);
+      },this.state.duration*10);
    }  
 
-   setTimeOutFunction(){
-          
-          setTimeout(()=>
-              {                                                                              
+   setTimeOutFunction(){                                                                                       
                   this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})
                   this.setState({totalCount:this.state.totalCount+1})         
                   this.setState({breatheBool:3})                                                  
-                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                                            
-              },  400);
+                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                            
    }
+   
+
 
    startButtonAction(){  
             this.setState({buttonTitle:'                            Stop                              ',})     
@@ -95,22 +107,22 @@ export default class Breath extends Component {
             
             this.manageTimeAll()      
 
-            root = setInterval(()=>{       
-                        
+            root = setInterval(()=>{                       
                 this.setState({initialProgress:(this.state.initialProgress+1)%2}) 
                 this.setState({barProgress:this.state.initialProgress})   
                 this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})                                                          
                 this.setState({breatheBool:this.state.totalCount%2})                                   
               
-            this.manageTimeAll()
+              this.manageTimeAll()
 
-            }, 6000)                      
+            }, (this.state.duration*1000+800))     
+            
     }
 
     stopButtonAction(){                 
           clearInterval(child)
           clearInterval(root)
-          clearTimeout(this.setTimeOutFunction)          
+          if(typeof timeOut!== 'undefined')clearTimeout(timeOut)
           this.setState({buttonTitle:'                            Start                            ',
                          buttonStatus:false,
                          breatheBool:2,
@@ -131,11 +143,10 @@ export default class Breath extends Component {
 
     
   render() {
-    const {height,width}=Dimensions.get('window')
-    const w=width
+    
     return (
       <View style={styles.container}>
-          <View style={styles.firstView} width={w-30}>
+          <View style={styles.firstView} width={this.width-30}>
               <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})
                                                                      if(this.state.buttonStatus==true) this.stopButtonAction() 
                                                                      }}
@@ -145,7 +156,7 @@ export default class Breath extends Component {
 
               <View style={styles.name}>
                 <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#11aaaa'}}>Happy Breathing</Text>
-              </View>
+              </View>            
               
               <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})
                                                                   if(this.state.buttonStatus==true) this.stopButtonAction()
@@ -154,7 +165,7 @@ export default class Breath extends Component {
                 <Icon name='information-outline' size={24} color='#666666'/>
               </TouchableOpacity>
           </View>
-          <View style={styles.breathingInOutView} width={w-40}>
+          <View style={styles.breathingInOutView} width={this.width-40}>
                <Text  style={this.state.breathingTextStyle}>{this.state.breatheInOut[this.state.breatheBool]}</Text> 
           </View>  
 
@@ -232,6 +243,6 @@ const styles=StyleSheet.create({
       flex:.2,
       justifyContent:'center',
       alignItems:'center',      
-    }
+    },
 
 })
