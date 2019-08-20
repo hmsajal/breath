@@ -11,17 +11,18 @@ export default class BreathModal extends Component {
     width = Dimensions.get('window').width
 
     this.state={
-      selectedDurationValue:'key0'
+      selectedSoundValue:'key0',
+      durationValue:5
     }
   }
 
   valueChangeFunc(value){
-    this.setState({selectedDurationValue:value})
+    this.setState({selectedSoundValue:value})
   }
 
   render() {
     return (
-      <Modal visible={this.props.modalProp} onRequestClose={this.props.modalBackPress}>
+      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.props.modalBackPress(this.state.durationValue)}}>
           <View style={{backgroundColor:'#ffffe0', flex:1}}>
               <View style={{flex:.1,justifyContent:'center',borderBottomWidth:2,borderBottomColor:'#aaaaaa',
                             width:width-30,alignSelf:'center'
@@ -36,7 +37,9 @@ export default class BreathModal extends Component {
                 <Text style={{fontSize:16}}>Duration per breathing in second</Text>
               </View>
               <View>
-                <DurationManagement/>
+                <DurationManagement currentValueTransfer={(val)=>{this.setState({durationValue:val})}}
+                                                          parentDuration={this.state.durationValue}
+                />                
               </View>              
               <View style={{flex:.15,justifyContent:'center',alignItems:'flex-start',width:width-30,
                           alignSelf:'center',justifyContent:'flex-end'
@@ -49,7 +52,7 @@ export default class BreathModal extends Component {
                           >
                     <Picker                    
                     mode='dropdown'                                      
-                    selectedValue={this.state.selectedDurationValue}
+                    selectedValue={this.state.selectedSoundValue}
                     onValueChange={(value)=>{this.valueChangeFunc(value)}}                                        
                     >
                       <Picker.Item label="soundName1" value="key0" />
@@ -58,9 +61,9 @@ export default class BreathModal extends Component {
                       <Picker.Item label="soundName4" value="key3" />
                       <Picker.Item label="soundName5" value="key4" />
                     </Picker>
-              </View>                                            
-           </View>
-      </Modal>
+              </View>                                                       
+           </View>               
+      </Modal>     
     );
   }
 }

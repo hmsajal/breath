@@ -10,24 +10,31 @@ export default class DurationManagement extends Component {
       height=Dimensions.get('window').height
       
       this.state={
-          currentValue:5
+          currentValue:this.props.parentDuration
       }
     }
 
-    minusFunc(){
-        if(this.state.currentValue > 5){
+    minusFunc(){        
+        
+        if(this.state.currentValue >5){
+            this.props.currentValueTransfer(this.state.currentValue-1)
             this.setState({
                 currentValue:this.state.currentValue-1
             })
         }
+        
+        
     }
 
     plusFunc(){
+        
         if(this.state.currentValue < 20){
+            this.props.currentValueTransfer(this.state.currentValue+1)
             this.setState({
                 currentValue:this.state.currentValue+1
             })
         }
+        
     }
 
     render(){
@@ -47,7 +54,7 @@ export default class DurationManagement extends Component {
 
                             <TouchableOpacity onPress={()=>{this.plusFunc()}}>
                                 <Icon name='plus-box' size={35} />
-                            </TouchableOpacity>
+                            </TouchableOpacity>                            
             </View>
         )
     }

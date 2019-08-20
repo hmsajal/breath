@@ -47,7 +47,7 @@ export default class Breath extends Component {
               this.state.buttonStatus==false
                           ? 
               
-              <Text style={{fontSize:120,fontFamily:'sans-serif-thin',fontStyle:'italic'}}>{this.state.duration}s</Text>             
+              <Text style={{fontSize:100,fontFamily:'cursive',fontStyle:'italic'}}> {this.state.duration} sec </Text>             
                           :
             ( (this.state.initialProgress)==0 
                           ?
@@ -59,7 +59,7 @@ export default class Breath extends Component {
                           :
               <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"
                            direction='counter-clockwise' color='#119977' strokeCap='round' borderWidth={0} showsText={true}
-                           formatText={(progress)=>{return(5-Math.round(progress*this.state.duration))}}
+                           formatText={(progress)=>{return(this.state.duration-Math.round(progress*this.state.duration))}}
                            textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
               />     
              )
@@ -186,7 +186,9 @@ export default class Breath extends Component {
             </Button>
           </View>
           
-          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={()=>{this.setState({settingsModalVisible:false})}}/>
+          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={(val)=>{this.setState({settingsModalVisible:false})
+                                                                                           this.setState({duration:val})
+                                                                                          }}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
       </View>
     );
