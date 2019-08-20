@@ -35,7 +35,7 @@ export default class DurationManagement extends Component {
             <View style={{height:height*.15,width:width-40,borderBottomWidth:1,alignSelf:'center',alignItems:'center',
                           borderColor:'#555555',flexDirection:'row', justifyContent:'space-evenly'
                         }}>
-                            <TouchableOpacity onPress={()=>this.minusFunc()}>
+                            <TouchableOpacity onPress={()=>{this.minusFunc()}}>
                                 <Icon name='minus-box' size={35}/>
                             </TouchableOpacity>
 
