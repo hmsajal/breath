@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Modal,Dimensions} from 'react-native';
 import {Picker} from 'native-base'
+import DurationManagement from './durationManagement.js'
 
 
 export default class BreathModal extends Component {
   
-
   constructor(props){
     super(props)
     width = Dimensions.get('window').width
 
     this.state={
-      selectedDurationValue:"key4"
+      selectedDurationValue:'key0'
     }
   }
 
@@ -23,34 +23,43 @@ export default class BreathModal extends Component {
     return (
       <Modal visible={this.props.modalProp} onRequestClose={this.props.modalBackPress}>
           <View style={{backgroundColor:'#ffffe0', flex:1}}>
-              <View style={{flex:.07,justifyContent:'center',borderBottomWidth:1,borderBottomColor:'#70707070',
+              <View style={{flex:.1,justifyContent:'center',borderBottomWidth:2,borderBottomColor:'#aaaaaa',
                             width:width-30,alignSelf:'center'
                           }}
               >
-                <Text style={{fontSize:20,fontStyle:'italic',fontWeight:'bold',}}>Settings</Text>
+                <Text style={{fontSize:22,fontStyle:'italic',fontWeight:'bold',}}>Settings</Text>
               </View>
 
-              <View style={{flex:.1, justifyContent:'center',width:width-30,alignSelf:'center'}}>                
-                <Picker
-                mode='dialog'
-                supportedOrientations="landscape"               
-                style={{ width: undefined }}
-                placeholder="Select the duration"                
-                selectedValue={this.state.selectedDurationValue}
-                onValueChange={()=>{this.valueChangeFunc(value)}}
-                >
-                  <Picker.Item label="Wallet" value="key0" />
-                  <Picker.Item label="ATM Card" value="key1" />
-                  <Picker.Item label="Debit Card" value="key2" />
-                  <Picker.Item label="Credit Card" value="key3" />
-                  <Picker.Item label="Net Banking" value="key4" />
-              </Picker>
+              <View style={{flex:.12,justifyContent:'center', alignItems:'flex-start',width:width-30,
+                            justifyContent:'flex-end',alignSelf:'center'
+                           }}>
+                <Text style={{fontSize:16}}>Duration per breathing in second</Text>
               </View>
-
-              <View style={{flex:.1,flexDirection:'row', alignItems:'center',width:width-30,alignSelf:'center'}}>
-                <Text style={{fontSize:16}}>Choose the interval sound</Text>
+              <View>
+                <DurationManagement/>
+              </View>              
+              <View style={{flex:.15,justifyContent:'center',alignItems:'flex-start',width:width-30,
+                          alignSelf:'center',justifyContent:'flex-end'
+                          }}>
+                  <Text style={{fontSize:16}}>Choose the Interval sound</Text>
               </View>
-          </View>
+              <View style={{flex:.05}}/>
+              <View style={{flex:.1,justifyContent:'center', width:width-30, alignSelf:'center',
+                            borderWidth:1,borderColor:'#333333', borderRadius:10, height:width*.12}}
+                          >
+                    <Picker                    
+                    mode='dropdown'                                      
+                    selectedValue={this.state.selectedDurationValue}
+                    onValueChange={(value)=>{this.valueChangeFunc(value)}}                                        
+                    >
+                      <Picker.Item label="soundName1" value="key0" />
+                      <Picker.Item label="soundName2" value="key1" />
+                      <Picker.Item label="soundName3" value="key2" />
+                      <Picker.Item label="soundName4" value="key3" />
+                      <Picker.Item label="soundName5" value="key4" />
+                    </Picker>
+              </View>                                            
+           </View>
       </Modal>
     );
   }
