@@ -7,7 +7,6 @@ import Sound from 'react-native-sound'
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
 
-
 export default class Breath extends Component {
 
   constructor(props){
@@ -15,8 +14,11 @@ export default class Breath extends Component {
 
     this.width = Dimensions.get('window').width
     this.w = this.width*.5
+    this.soundArray=["chinup.mp3","confident.mp3","definite.mp3","goodthingshappen.mp3","graceful.mp3"]
+    
 
-    this.state={  
+    this.state={   
+      soundValue:0,         
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
@@ -39,8 +41,15 @@ export default class Breath extends Component {
       }
     },    
     this.setTimeOutFunction=this.setTimeOutFunction.bind(this)
-    sound=new Sound('chinup.mp3')
+    
   }  
+
+  modalBackPressAction(val1,val2){
+    this.setState({settingsModalVisible:false})
+    this.setState({duration:val1})
+    this.setState({soundValue:val2})      
+    this.rockstar = new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)
+  }
 
    timerViewRendering(){
      return(
@@ -86,7 +95,8 @@ export default class Breath extends Component {
                   this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})
                   this.setState({totalCount:this.state.totalCount+1})         
                   this.setState({breatheBool:3})                                                  
-                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount})                                            
+                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
+                  this.rockstar.play()                                     
    }
    
 
@@ -139,7 +149,7 @@ export default class Breath extends Component {
                          increment:0,
                          numberOfCount:0
                        })            
-    }    
+    }   
 
     
   render() {
@@ -186,11 +196,10 @@ export default class Breath extends Component {
             </Button>
           </View>
           
-          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={(val)=>{this.setState({settingsModalVisible:false})
-                                                                                           this.setState({duration:val})
-                                                                                          }}/>
+          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={(val1,val2)=>{ this.modalBackPressAction(val1,val2)}}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
-      </View>
+      
+      </View>      
     );
   }
 
