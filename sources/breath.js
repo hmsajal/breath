@@ -18,7 +18,8 @@ export default class Breath extends Component {
     
 
     this.state={   
-      soundValue:0,         
+      soundValue:0,   
+      rockstar:new Sound('chinup.mp3', Sound.MAIN_BUNDLE),           
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
@@ -48,7 +49,7 @@ export default class Breath extends Component {
     this.setState({soundValue:val2})  
     this.setState({settingsModalVisible:false})
     this.setState({duration:val1})    
-    this.rockstar = new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)        
+    this.setState({rockstar : new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)})
   }
 
    timerViewRendering(){
@@ -96,13 +97,12 @@ export default class Breath extends Component {
                   this.setState({totalCount:this.state.totalCount+1})         
                   this.setState({breatheBool:3})                                                  
                   this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
-                  this.rockstar.play()                                     
+                  this.state.rockstar.play()                                                  
    }
    
 
 
-   startButtonAction(){  
-            console.log(this.rockstar)
+   startButtonAction(){              
             this.setState({buttonTitle:'                            Stop                              ',})     
             this.setState({buttonStatus:true})
             this.setState({breatheBool:0})            
