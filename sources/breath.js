@@ -45,10 +45,10 @@ export default class Breath extends Component {
   }  
 
   modalBackPressAction(val1,val2){
+    this.setState({soundValue:val2})  
     this.setState({settingsModalVisible:false})
-    this.setState({duration:val1})
-    this.setState({soundValue:val2})      
-    this.rockstar = new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)
+    this.setState({duration:val1})    
+    this.rockstar = new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)        
   }
 
    timerViewRendering(){
@@ -102,6 +102,7 @@ export default class Breath extends Component {
 
 
    startButtonAction(){  
+            console.log(this.rockstar)
             this.setState({buttonTitle:'                            Stop                              ',})     
             this.setState({buttonStatus:true})
             this.setState({breatheBool:0})            
