@@ -78,16 +78,17 @@ export default class Breath extends Component {
 
    manageTimeAll(){
 
-      child=setInterval(()=>{
-          this.setState({barProgress:this.state.barProgress+this.state.increment});
-          if(this.state.barProgress<=0||this.state.barProgress>=1)
-            {
+      child=setInterval(()=>{          
+          if(this.state.barProgress>=0 && this.state.barProgress<=1)
+          {            
+            this.setState({barProgress:this.state.barProgress+this.state.increment});
+          }
+          else{
                 clearInterval(child)    
 
                 timeOut= setTimeout(()=>{
-                     this.setTimeOutFunction()    
-                },300)
-                         
+                    this.setTimeOutFunction()    
+                },300)                         
             }            
       },this.state.duration*10);
    }  
