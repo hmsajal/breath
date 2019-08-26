@@ -18,13 +18,11 @@ export default class Breath extends Component {
     this.soundArray=["chinup.mp3","confident.mp3","definite.mp3","goodthingshappen.mp3","graceful.mp3"]
     
 
-    this.state={   
-      a:0,
-      clockDirection:'clockwise',
+    this.state={            
       clockArray:['clockwise','counter-clockwise'],
       soundValue:0,   
       rockstar:new Sound('chinup.mp3', Sound.MAIN_BUNDLE),           
-      breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
+      breatheInOut:['Breathe in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
       buttonTitle: '                            Start                            ',
@@ -60,50 +58,56 @@ export default class Breath extends Component {
               
               <Text style={{fontSize:100,fontFamily:'cursive',fontStyle:'italic'}}> {this.state.duration} sec </Text>             
                           :
-            
-              <Test.Circle progress={Math.abs(this.state.a-this.state.barProgress)} size={145} thickness={20} unfilledColor="#11777744"              
-                           direction={this.state.clockDirection} color='#119977' strokeCap='round' borderWidth={0} showsText={true}
-                           formatText={(progress)=>{return(Math.round(progress*this.state.duration))}}
-                           textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
-              />                           
-           )
+              (
+                  this.state.totalCount%2===0
+                          ?
+                  <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"              
+                              direction={"clockwise"} color='#119977' strokeCap='round' borderWidth={0} showsText={true}
+                              formatText={(progress)=>{return(Math.round(progress*this.state.duration))}}
+                              textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}                           
+                  />  
+                          :
+                  <Test.Circle progress={1-this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"              
+                  direction={"counter-clockwise"} color='#119977' strokeCap='round' borderWidth={0} showsText={true}
+                  formatText={(progress)=>{return(Math.round(5-progress*this.state.duration))}}
+                  textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}                           
+                  /> 
+              )   
+
+           )           
    }
 
-   timeOutFunction(){                                                                                       
+   timeOutFunction(){                                                                        
     this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})                          
-    this.setState({breatheBool:3})                                                  
+    // this.setState({breatheBool:3})                                                  
     this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
     this.setState({totalCount:this.state.totalCount+1}) 
     this.state.rockstar.play()                                                  
 }
 
-   manageTime(){      
-      if(this.state.barProgress>=1){
-        this.timeOutFunction()
+    manageTime(){                                      
+      if(this.state.barProgress<1){
+            setTimeout(()=>{                                      
+              this.manageTime()                           
+            },
+              this.state.duration*10);
       }
-      else {
-        setTimeout(()=>{          
-                            this.setState({barProgress:this.state.barProgress+.01})      
-                            this.manageTime()                           
-                       },
-                      this.state.duration*10);
-      }
-   }  
-
-
-   loopStartFunction(){
+      else  {  this.timeOutFunction()  }
+      
+      this.setState({barProgress:this.state.barProgress+.01})   
+      
+    }  
+ 
+   mainLoopFunction(){    
       this.setState({barProgress:0})                                                                          
-      this.setState({breatheBool:this.state.totalCount%2})    
-      this.setState({clockDirection:this.state.clockArray[this.state.totalCount%2]})   
-      this.setState({a:this.state.breatheBool})                                             
-      this.manageTime()  
-   }  
+      this.setState({breatheBool:this.state.totalCount%2})          
+      timeOut=setTimeout(()=>{
 
-   mainLoopFunction(){      
-      this.loopStartFunction()
-      timeOut=setTimeout(()=>{this.mainLoopFunction},this.state.duration*1000+800)
+                    this.mainLoopFunction()
+            
+      },((this.state.duration*1000)+500))
+      this.manageTime()
    }
-
 
 
 
@@ -136,8 +140,7 @@ export default class Breath extends Component {
                             fontFamily:'time'
                          },
                          barProgress:0,                                                 
-                         numberOfCount:0,                         
-                         clockDirection:'clockwise'
+                         numberOfCount:0,                                                  
                        })            
     }   
 
