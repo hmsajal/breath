@@ -77,36 +77,35 @@ export default class Breath extends Component {
            )           
    }
 
-   timeOutFunction(){                                                                        
-    this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})                          
-    // this.setState({breatheBool:3})                                                  
-    this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
-    this.setState({totalCount:this.state.totalCount+1}) 
-    this.state.rockstar.play()                                                  
+   timeOutFunction(){  
+        clearInterval(this.interval)                                                                              
+        this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})                          
+        // this.setState({breatheBool:3})                                                  
+        this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
+        this.setState({totalCount:this.state.totalCount+1}) 
+        this.state.rockstar.play()                                                  
 }
 
-    manageTime(){                                      
-      if(this.state.barProgress<1){
-            setTimeout(()=>{                                      
-              this.manageTime()                           
-            },
-              this.state.duration*10);
-      }
-      else  {  this.timeOutFunction()  }
-      
-      this.setState({barProgress:this.state.barProgress+.01})   
-      
+  manageTime(){                                      
+      this.interval = setInterval(()=>{
+            if(this.state.barProgress>=1){
+                this.timeOutFunction()              
+            }
+            else this.setState({barProgress:this.state.barProgress+.01})        
+      },this.state.duration*10)
     }  
  
    mainLoopFunction(){    
-      this.setState({barProgress:0})                                                                          
-      this.setState({breatheBool:this.state.totalCount%2})          
-      timeOut=setTimeout(()=>{
+    this.setState({barProgress:0})                                                                          
+    this.setState({breatheBool:this.state.totalCount%2})                
+    this.manageTime()
+    this.mainInterval=setInterval(()=>
+    {
+            this.setState({barProgress:0})                                                                          
+            this.setState({breatheBool:this.state.totalCount%2})                
+            this.manageTime()
 
-                    this.mainLoopFunction()
-            
-      },((this.state.duration*1000)+500))
-      this.manageTime()
+      },((this.state.duration*1000)+300))
    }
 
 
@@ -127,7 +126,8 @@ export default class Breath extends Component {
     }
 
     stopButtonAction(){   
-          if(typeof timeOut != "undefined") clearTimeout(timeOut)                                      
+          clearInterval(this.mainInterval)
+          if(typeof this.timeOut != "undefined") clearTimeout(this.timeOut)                                      
           this.setState({buttonTitle:'                            Start                            ',
                          buttonStatus:false,                         
                          breatheBool:2,
