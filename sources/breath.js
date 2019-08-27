@@ -7,6 +7,7 @@ import Sound from 'react-native-sound'
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
 
+
 export default class Breath extends Component {
 
   constructor(props){
@@ -78,26 +79,25 @@ export default class Breath extends Component {
 
    manageTimeAll(){
 
-      child=setInterval(()=>{
+      this.child=setInterval(()=>{
           this.setState({barProgress:this.state.barProgress+this.state.increment});
           if(this.state.barProgress<=0||this.state.barProgress>=1)
             {
-                clearInterval(child)    
-
-                timeOut= setTimeout(()=>{
+                this.timeOut= setTimeout(()=>{
                      this.setTimeOutFunction()    
                 },300)
-                         
+                clearInterval(this.child)          
             }            
       },this.state.duration*10);
    }  
 
    setTimeOutFunction(){                                                                                       
-                  this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})
-                  this.setState({totalCount:this.state.totalCount+1})         
-                  this.setState({breatheBool:3})                                                  
-                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
-                  this.state.rockstar.play()                                                  
+                  this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})                                                                    
+                  this.setState({timesCountString:'Times Count: '+this.state.numberOfCount,
+                                 breatheBool:3,
+                                 totalCount:this.state.totalCount+1
+                                }) 
+                  this.state.rockstar.play()                                                               
    }
    
 
@@ -118,11 +118,12 @@ export default class Breath extends Component {
             
             this.manageTimeAll()      
 
-            root = setInterval(()=>{                       
+            this.root = setInterval(()=>{                       
                 this.setState({initialProgress:(this.state.initialProgress+1)%2}) 
-                this.setState({barProgress:this.state.initialProgress})   
-                this.setState({increment:this.state.increProgressVal[this.state.initialProgress]})                                                          
-                this.setState({breatheBool:this.state.totalCount%2})                                   
+                this.setState({breatheBool:this.state.totalCount%2,
+                               barProgress:this.state.initialProgress,
+                               increment:this.state.increProgressVal[this.state.initialProgress],
+                              })                                                    
               
               this.manageTimeAll()
 
@@ -131,9 +132,9 @@ export default class Breath extends Component {
     }
 
     stopButtonAction(){                 
-          clearInterval(child)
-          clearInterval(root)
-          if(typeof timeOut!== 'undefined')clearTimeout(timeOut)
+          clearInterval(this.child)
+          clearInterval(this.root)
+          clearTimeout(this.timeOut)          
           this.setState({buttonTitle:'                            Start                            ',
                          buttonStatus:false,
                          breatheBool:2,
