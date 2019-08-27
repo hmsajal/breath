@@ -70,46 +70,46 @@ export default class Breath extends Component {
                   />  
                           :
                   <Test.Circle progress={1-this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"              
-                  direction={"counter-clockwise"} color='#119977' strokeCap='round' borderWidth={0} showsText={true}
-                  formatText={(progress)=>{return(Math.round(5-progress*this.state.duration))}}
-                  textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}                           
+                              direction={"counter-clockwise"} color='#119977' strokeCap='round' borderWidth={0} showsText={true}
+                              formatText={(progress)=>{return(Math.round(5-progress*this.state.duration))}}
+                              textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}                           
                   /> 
               )   
 
            )           
    }
 
-   timeOutFunction(){  
-        clearInterval(this.interval)                                                                              
+   timeOutFunction(){    
+        clearInterval(this.interval)                                                                                   
         this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2),
                        timesCountString:'Times Count: '+this.state.numberOfCount,
                        totalCount:this.state.totalCount+1
                       })                                                                                                         
-        this.state.rockstar.play()                                                  
+        this.state.rockstar.play()  
+        console.log(this.state.totalCount)                                                
 }
 
-  manageTime(){                                      
-       this.interval = setInterval(()=>{
-            if(this.state.barProgress>=1){
-                this.timeOutFunction()              
-            }
-            else {this.setState({barProgress:this.state.barProgress+.01})          
-          }
-      },this.state.duration*10)
+  manageShortTime(){       
+       this.interval = setInterval(()=>{                                                     
+                this.setState({barProgress:this.state.barProgress+.01})
+          },this.state.duration*10)
   }  
+
+  manageLooping(){    
+      this.mainInterval=setInterval(()=>
+          {
+                  this.timeOutFunction()
+                  this.setState({barProgress:0,breatheBool:this.state.totalCount%2})                                                                                                
+                  this.manageShortTime()                  
+          },((this.state.duration*1000)+100))
+  }
  
    mainLoopFunction(){    
-        this.setState({barProgress:0,breatheBool:this.state.totalCount%2})    
-        this.manageTime()
-        
-        this.mainInterval=setInterval(()=>
-        {
-                this.setState({barProgress:0,breatheBool:this.state.totalCount%2})                                                                                                
-                this.manageTime()
-
-        },((this.state.duration*1000)+300))
+        this.setState({barProgress:0,breatheBool:this.state.totalCount%2})            
+        this.manageShortTime()             
+        this.manageLooping() 
    }
-
+  
 
 
    startButtonAction(){                   
@@ -128,7 +128,7 @@ export default class Breath extends Component {
 
     stopButtonAction(){   
           clearInterval(this.mainInterval)
-          if(typeof this.timeOut != "undefined") clearTimeout(this.timeOut)                                      
+          clearInterval(this.interval)                                      
           this.setState({buttonTitle:'                            Start                            ',
                          buttonStatus:false,                         
                          breatheBool:2,
