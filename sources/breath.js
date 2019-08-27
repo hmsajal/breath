@@ -79,49 +79,48 @@ export default class Breath extends Component {
 
    timeOutFunction(){  
         clearInterval(this.interval)                                                                              
-        this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2)})                          
-        // this.setState({breatheBool:3})                                                  
-        this.setState({timesCountString:'Times Count: '+this.state.numberOfCount}) 
-        this.setState({totalCount:this.state.totalCount+1}) 
+        this.setState({numberOfCount:this.state.numberOfCount+(this.state.totalCount%2),
+                       timesCountString:'Times Count: '+this.state.numberOfCount,
+                       totalCount:this.state.totalCount+1
+                      })                                                                                                         
         this.state.rockstar.play()                                                  
 }
 
   manageTime(){                                      
-      this.interval = setInterval(()=>{
+       this.interval = setInterval(()=>{
             if(this.state.barProgress>=1){
                 this.timeOutFunction()              
             }
-            else this.setState({barProgress:this.state.barProgress+.01})        
+            else {this.setState({barProgress:this.state.barProgress+.01})          
+          }
       },this.state.duration*10)
-    }  
+  }  
  
    mainLoopFunction(){    
-    this.setState({barProgress:0})                                                                          
-    this.setState({breatheBool:this.state.totalCount%2})                
-    this.manageTime()
-    this.mainInterval=setInterval(()=>
-    {
-            this.setState({barProgress:0})                                                                          
-            this.setState({breatheBool:this.state.totalCount%2})                
-            this.manageTime()
+        this.setState({barProgress:0,breatheBool:this.state.totalCount%2})    
+        this.manageTime()
+        
+        this.mainInterval=setInterval(()=>
+        {
+                this.setState({barProgress:0,breatheBool:this.state.totalCount%2})                                                                                                
+                this.manageTime()
 
-      },((this.state.duration*1000)+300))
+        },((this.state.duration*1000)+300))
    }
 
 
 
-   startButtonAction(){              
-            this.setState({buttonTitle:'                            Stop                              ',})     
-            this.setState({buttonStatus:true})        
-            this.setState({timesCountString:'Times Count: 0'})                
-            this.setState({breathingTextStyle:{
+   startButtonAction(){                   
+            this.setState({ buttonTitle:'                            Stop                              ',
+                            buttonStatus:true,
+                            timesCountString:'Times Count: 0',
+                            breathingTextStyle:{
                                                 fontSize:28,
                                                 color:'#666666',                              
                                                 fontStyle:'italic',
                                                 fontFamily:'times'
-                                              }
-                          })
-            
+                                                }
+                          })                                                                  
             this.mainLoopFunction()
     }
 
