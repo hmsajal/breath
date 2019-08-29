@@ -54,10 +54,8 @@ export default class BreathModal extends Component {
                     onValueChange={(value)=>{this.valueChangeFunc(value)}}                                        
                     >
                       <Picker.Item label="chinup.mp3" value={0} />
-                      <Picker.Item label="confident.mp3" value={1} />
-                      <Picker.Item label="definite.mp3" value={2} />
-                      <Picker.Item label="goodthingshappen.mp3" value={3} />
-                      <Picker.Item label="graceful.mp3" value={4} />
+                      <Picker.Item label="definite.mp3" value={1} />                      
+                      <Picker.Item label="graceful.mp3" value={2} />
                     </Picker>                    
               </View>                                                       
            </View>               

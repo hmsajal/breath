@@ -15,7 +15,7 @@ export default class Breath extends Component {
 
     this.width = Dimensions.get('window').width
     this.w = this.width*.5
-    this.soundArray=["chinup.mp3","confident.mp3","definite.mp3","goodthingshappen.mp3","graceful.mp3"]
+    this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]
     
 
     this.state={   
@@ -28,7 +28,7 @@ export default class Breath extends Component {
       timesCountString: '',   
       numberOfCount:0,         
       initialProgress:0,      
-      increProgressVal:[.01,-.01],    
+      increProgressVal:[.05,-.05],    
       increment:0,
       barProgress:0,
       duration:5,
@@ -43,12 +43,12 @@ export default class Breath extends Component {
     }    
   }  
 
-  modalBackPressAction(val1,val2){
+  modalBackPressAction(val1,val2){    
     this.setState({soundValue:val2,
                    settingsModalVisible:false,
-                   duration:val1,
-                   rockstar : new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)
-    })      
+                   duration:val1,                   
+    })  
+    this.setState({rockstar : new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)})        
   }
 
    timerViewRendering(){
@@ -77,26 +77,24 @@ export default class Breath extends Component {
 
    manageTime(){         
     
+            timeOut= setTimeout(()=>{                                                                                                                     
+                          this.setState({numberOfCount:this.state.numberOfCount+(this.state.initialProgress)})                                                                    
+                          this.setState({timesCountString:'Times Count: '+this.state.numberOfCount,
+                                        breatheBool:3,                                                           
+                                        })                                  
+                          this.state.rockstar.play()     
+            },this.state.duration*1000+300)
             
             
-
             child=setInterval(()=>{                   
                   if(this.state.barProgress>=0 && this.state.barProgress<=1){                                    
                           this.setState({barProgress:this.state.barProgress+this.state.increment})            
                   }        
                   else
-                      {                                  
+                      {                            
                           clearInterval(child)                                                        
                       }
-              },this.state.duration*10);
-
-              timeOut= setTimeout(()=>{                                                                                                           
-                            this.setState({numberOfCount:this.state.numberOfCount+(this.state.initialProgress)})                                                                    
-                            this.setState({timesCountString:'Times Count: '+this.state.numberOfCount,
-                                          breatheBool:3,                                                           
-                                          })                                  
-                            this.state.rockstar.play()     
-              },this.state.duration*1000+500)
+              },this.state.duration*50);
     }     
 
 
@@ -117,7 +115,8 @@ export default class Breath extends Component {
             
             this.manageTime()      
 
-            root = setInterval(()=>{                                               
+            root = setInterval(()=>{    
+                                                             
                 this.setState({initialProgress:(this.state.initialProgress+1)%2})                 
                 this.setState({breatheBool:this.state.initialProgress,
                                barProgress:this.state.initialProgress,
