@@ -18,8 +18,7 @@ export default class Breath extends Component {
     this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]
     
 
-    this.state={   
-      soundValue:0,   
+    this.state={         
       rockstar:new Sound('chinup.mp3', Sound.MAIN_BUNDLE),           
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
@@ -28,10 +27,10 @@ export default class Breath extends Component {
       timesCountString: '',   
       numberOfCount:0,         
       initialProgress:0,      
-      increProgressVal:[.05,-.05],    
+      increProgressVal:[.03,-.03],    
       increment:0,
       barProgress:0,
-      duration:5,
+      duration:8,
       settingsModalVisible:false,         
       aboutModalVisible:false,      
       breathingTextStyle:{
@@ -43,12 +42,12 @@ export default class Breath extends Component {
     }    
   }  
 
-  modalBackPressAction(val1,val2){    
-    this.setState({soundValue:val2,
-                   settingsModalVisible:false,
-                   duration:val1,                   
-    })  
-    this.setState({rockstar : new Sound(this.soundArray[this.state.soundValue], Sound.MAIN_BUNDLE)})        
+  modalBackPressAction(val1,val2){        
+      this.setState({
+                    duration:val1, 
+                    rockstar : new Sound(this.soundArray[val2], Sound.MAIN_BUNDLE) ,
+                    settingsModalVisible:false,                 
+                  })                        
   }
 
    timerViewRendering(){
@@ -63,13 +62,13 @@ export default class Breath extends Component {
               <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"              
                            direction="clockwise" color='#119977' strokeCap='round' borderWidth={0} showsText={true}
                            formatText={(progress)=>{return(Math.round(progress*this.state.duration))}}
-                           textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
+                           textStyle={{fontSize:36,fontStyle:'italic',color:'#444444'}}
               /> 
                           :
               <Test.Circle progress={this.state.barProgress} size={145} thickness={20} unfilledColor="#11777744"
                            direction='counter-clockwise' color='#119977' strokeCap='round' borderWidth={0} showsText={true}
                            formatText={(progress)=>{return(this.state.duration-Math.round(progress*this.state.duration))}}
-                           textStyle={{fontSize:40,fontStyle:'italic',color:'#444444'}}
+                           textStyle={{fontSize:36,fontStyle:'italic',color:'#444444'}}
               />     
              )
            )
@@ -94,12 +93,12 @@ export default class Breath extends Component {
                       {                            
                           clearInterval(child)                                                        
                       }
-              },this.state.duration*50);
+              },this.state.duration*30);
     }     
 
 
 
-   startButtonAction(){              
+   startButtonAction(){                  
             this.setState({buttonTitle:'                            Stop                              ',
                            buttonStatus:true,
                            breatheBool:0,

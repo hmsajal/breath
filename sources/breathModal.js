@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Modal,Dimensions} from 'react-native';
+import {Platform, StyleSheet, Text, View, Modal,Dimensions,Button} from 'react-native';
 import {Picker} from 'native-base'
 import DurationManagement from './durationManagement.js'
 
 export default class BreathModal extends Component {
   
   constructor(props){
-    super(props)
+    super(props);
     width = Dimensions.get('window').width
+    
     this.state={      
       selectedSoundValue:0,      
-      durationValue:5
+      durationValue:8
     }    
   }
 
@@ -18,9 +19,13 @@ export default class BreathModal extends Component {
     this.setState({selectedSoundValue:value})           
   }
 
+  savingFunction(){
+    this.props.modalBackPress(this.state.durationValue,this.state.selectedSoundValue)
+  }
+
   render() {
     return (
-      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.props.modalBackPress(this.state.durationValue,this.state.selectedSoundValue)}}>
+      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.savingFunction()}}>
           <View style={{backgroundColor:'#ffffe0', flex:1}}>
               <View style={{flex:.1,justifyContent:'center',borderBottomWidth:2,borderBottomColor:'#aaaaaa',
                             width:width-30,alignSelf:'center'
@@ -38,7 +43,9 @@ export default class BreathModal extends Component {
                 <DurationManagement currentValueTransfer={(val)=>{this.setState({durationValue:val})}}
                                                           parentDuration={this.state.durationValue}
                 />                
-              </View>              
+              </View> 
+
+
               <View style={{flex:.15,justifyContent:'center',alignItems:'flex-start',width:width-30,
                           alignSelf:'center',justifyContent:'flex-end'
                           }}>
@@ -57,7 +64,12 @@ export default class BreathModal extends Component {
                       <Picker.Item label="definite.mp3" value={1} />                      
                       <Picker.Item label="graceful.mp3" value={2} />
                     </Picker>                    
-              </View>                                                       
+              </View> 
+              <View style={{flex:.3,justifyContent:'flex-end',alignItems:'center'}}>
+                    <Button title="   Save    " color='#777777' onPress={()=>{this.savingFunction()}}>
+
+                    </Button>
+              </View>                                                      
            </View>               
       </Modal>     
     );
