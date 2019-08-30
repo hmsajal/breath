@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions,ImageBackground} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Test from 'react-native-progress'
 import Sound from 'react-native-sound'
+import KeepAwake from 'react-native-keep-awake'
 
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
@@ -95,10 +96,13 @@ export default class Breath extends Component {
                       }
               },this.state.duration*30);
     }     
+   
 
 
-
-   startButtonAction(){                  
+   startButtonAction(){   
+    
+            
+    
             this.setState({buttonTitle:'                            Stop                              ',
                            buttonStatus:true,
                            breatheBool:0,
@@ -128,7 +132,8 @@ export default class Breath extends Component {
             
     }
 
-    stopButtonAction(){                 
+    stopButtonAction(){     
+          KeepAwake.deactivate()            
           clearInterval(child)
           clearInterval(root)
           clearTimeout(timeOut)          
@@ -187,7 +192,9 @@ export default class Breath extends Component {
           <View style={styles.buttonView}>
             <Button title={this.state.buttonTitle} color='#11aaaa' onPress={()=>{
                                                                                  if(this.state.buttonStatus==false)
-                                                                                    this.startButtonAction()
+                                                                                    {this.startButtonAction()
+                                                                                     KeepAwake.activate()
+                                                                                    }
                                                                                  else this.stopButtonAction()  
                                                                                 }}
             >                                                                           

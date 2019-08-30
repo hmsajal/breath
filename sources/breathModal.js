@@ -65,10 +65,8 @@ export default class BreathModal extends Component {
                       <Picker.Item label="graceful.mp3" value={2} />
                     </Picker>                    
               </View> 
-              <View style={{flex:.3,justifyContent:'flex-end',alignItems:'center'}}>
-                    <Button title="   Save    " color='#777777' onPress={()=>{this.savingFunction()}}>
-
-                    </Button>
+              <View style={{flex:.35,justifyContent:'flex-end',alignItems:'center'}}>
+                    <Button title="        Save         " color='#777777' onPress={()=>{this.savingFunction()}}/>                    
               </View>                                                      
            </View>               
       </Modal>     

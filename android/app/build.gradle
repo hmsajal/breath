@@ -152,6 +152,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-keep-awake')
+    implementation project(':react-native-keep-awake')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-sound')
     implementation fileTree(dir: "libs", include: ["*.jar"])
