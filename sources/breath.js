@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Test from 'react-native-progress'
 import Sound from 'react-native-sound'
 import KeepAwake from 'react-native-keep-awake'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import BreathModal from './breathModal'
 import AboutModal from './aboutModal'
@@ -13,11 +14,11 @@ export default class Breath extends Component {
 
   constructor(props){
     super(props);    
-
-    this.width = Dimensions.get('window').width
-    this.w = this.width*.5
-    this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]
     
+    this.width = Dimensions.get('window').width
+    this.w = this.width*.5    
+    this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]    
+    this.getData()    
 
     this.state={         
       rockstar:new Sound('chinup.mp3', Sound.MAIN_BUNDLE),           
@@ -26,12 +27,11 @@ export default class Breath extends Component {
       buttonStatus: false,
       buttonTitle: '                            Start                            ',
       timesCountString: '',   
-      numberOfCount:0,         
+      numberOfCount:0,           
       initialProgress:0,      
       increProgressVal:[.03,-.03],    
       increment:0,
-      barProgress:0,
-      duration:8,
+      barProgress:0,      
       settingsModalVisible:false,         
       aboutModalVisible:false,      
       breathingTextStyle:{
@@ -40,15 +40,32 @@ export default class Breath extends Component {
           fontStyle:'italic',
           fontFamily:'time',          
       }
-    }    
+    }     
   }  
 
-  modalBackPressAction(val1,val2){        
-      this.setState({
-                    duration:val1, 
-                    rockstar : new Sound(this.soundArray[val2], Sound.MAIN_BUNDLE) ,
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('storageDuration')
+      if(value !== null) {
+        this.setState({duration:parseInt(value)})
+        console.log(value)
+      }
+      else {
+        AsyncStorage.setItem('storageDuration','8')
+        this.setState({duration:8})        
+      }
+    } 
+    catch(e) {
+      // error reading value
+    }
+  }
+
+  modalBackPressAction(val){  
+      this.getData()      
+      this.setState({                     
+                    rockstar : new Sound(this.soundArray[val], Sound.MAIN_BUNDLE) ,
                     settingsModalVisible:false,                 
-                  })                        
+                  })                   
   }
 
    timerViewRendering(){
@@ -160,7 +177,7 @@ export default class Breath extends Component {
     return (
       <View style={styles.container}>
           <View style={styles.firstView} width={this.width-30}>
-              <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})
+              <TouchableOpacity style={styles.settings} onPress={()=>{this.setState({settingsModalVisible:true})                                                                      
                                                                      if(this.state.buttonStatus==true) this.stopButtonAction() 
                                                                      }}
               >
@@ -201,7 +218,7 @@ export default class Breath extends Component {
             </Button>
           </View>
           
-          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={(val1,val2)=>{ this.modalBackPressAction(val1,val2)}}/>
+          <BreathModal modalTransferAsyncData={this.state.duration} modalProp={this.state.settingsModalVisible} modalBackPress={val=>{ this.modalBackPressAction(val)}}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
       
       </View>      

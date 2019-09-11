@@ -4,30 +4,50 @@ import {Picker} from 'native-base'
 import DurationManagement from './durationManagement.js'
 import AsyncStorage from '@react-native-community/async-storage'
 
+
 export default class BreathModal extends Component {
   
   constructor(props){
     super(props);
-    width = Dimensions.get('window').width
-    
+    width = Dimensions.get('window').width    
     this.state={      
-      selectedSoundValue:0,      
-      durationValue:8
-    }    
+      selectedSoundValue:0,            
+    }  
+
+    this.getData()      
+  }  
+
+  storeData = async () => {
+        try {
+          await AsyncStorage.setItem('storageDuration', this.state.durationValue+'')          
+        } catch (e) {      
+    }
   }
 
+  getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('storageDuration')
+      if(value !== null) {
+        this.setState({durationValue:parseInt(value)})        
+      }      
+    } 
+    catch(e) {
+      // error reading value
+    }
+  }
 
   valueChangeFunc(value){
     this.setState({selectedSoundValue:value})           
   }
 
   savingFunction(){
-    this.props.modalBackPress(this.state.durationValue,this.state.selectedSoundValue)
+    this.storeData()
+    this.props.modalBackPress(this.state.selectedSoundValue)
   }
 
   render() {
     return (
-      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.savingFunction()}}>
+      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.savingFunction()}} onShow={()=>{this.setState({durationValue:this.props.modalTransferAsyncData})}}>
           <View style={{backgroundColor:'#ffffe0', flex:1}}>
               <View style={{flex:.1,justifyContent:'center',borderBottomWidth:2,borderBottomColor:'#aaaaaa',
                             width:width-30,alignSelf:'center'
@@ -68,7 +88,8 @@ export default class BreathModal extends Component {
                     </Picker>                    
               </View> 
               <View style={{flex:.35,justifyContent:'flex-end',alignItems:'center'}}>
-                    <Button title="        Save         " color='#777777' onPress={()=>{this.savingFunction()}}/>                    
+                    <Button title="        Save         " color='#777777' onPress={()=>{this.savingFunction()}}/> 
+                    <View flex={.05}/>                   
               </View>                                                      
            </View>               
       </Modal>     
