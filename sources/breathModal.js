@@ -9,27 +9,43 @@ export default class BreathModal extends Component {
   
   constructor(props){
     super(props);
-    width = Dimensions.get('window').width    
-    this.state={      
-      selectedSoundValue:0,            
-    }  
-
-    this.getData()      
+    width = Dimensions.get('window').width        
+    this.state={
+      
+    }
+    this.getData('storageDuration')
+    this.getData('storageSound')      
   }  
 
-  storeData = async () => {
+  
+
+  storeData = async (storeVal) => {
         try {
-          await AsyncStorage.setItem('storageDuration', this.state.durationValue+'')          
-        } catch (e) {      
-    }
+              await 
+                  (
+                  
+                              storeVal==='storageDuration'
+                                          ?
+                          AsyncStorage.setItem(storeVal, this.state.durationValue+'')   
+                                          :
+                  AsyncStorage.setItem(storeVal,this.state.selectedSoundValue+'')       
+                  )
+        } 
+        catch (e) {      
+        }
   }
 
-  getData = async () => {
+  getData = async (getVal) => {
     try {
-      const value = await AsyncStorage.getItem('storageDuration')
+      const value = await AsyncStorage.getItem(getVal)
       if(value !== null) {
-        this.setState({durationValue:parseInt(value)})        
-      }      
+                  getVal==='storageDuration'
+                            ?
+            this.setState({durationValue:parseInt(value)}) 
+                            :
+            this.setState({selectedSoundValue:parseInt(value)})         
+      }   
+      console.log(this.state.durationValue)        
     } 
     catch(e) {
       // error reading value
@@ -41,8 +57,9 @@ export default class BreathModal extends Component {
   }
 
   savingFunction(){
-    this.storeData()
-    this.props.modalBackPress(this.state.selectedSoundValue)
+    this.storeData('storageDuration')
+    this.storeData('storageSound')
+    this.props.modalBackPress()
   }
 
   render() {

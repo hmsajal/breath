@@ -18,10 +18,12 @@ export default class Breath extends Component {
     this.width = Dimensions.get('window').width
     this.w = this.width*.5    
     this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]    
-    this.getData()    
+
+    this.getData('storageDuration') 
+    this.getData('storageSound')
 
     this.state={         
-      rockstar:new Sound('chinup.mp3', Sound.MAIN_BUNDLE),           
+         
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
@@ -43,27 +45,26 @@ export default class Breath extends Component {
     }     
   }  
 
-  getData = async () => {
+  getData = async (getVal) => {
     try {
-      const value = await AsyncStorage.getItem('storageDuration')
+      const value = await AsyncStorage.getItem(getVal)      
       if(value !== null) {
-        this.setState({duration:parseInt(value)})
-        console.log(value)
-      }
-      else {
-        AsyncStorage.setItem('storageDuration','8')
-        this.setState({duration:8})        
-      }
+         getVal==='storageDuration'
+                    ?
+         this.setState({duration:parseInt(value)}) 
+                    :
+         this.setState({rockstar : new Sound(this.soundArray[parseInt(value)], Sound.MAIN_BUNDLE)})
+      }            
     } 
     catch(e) {
       // error reading value
     }
   }
 
-  modalBackPressAction(val){  
-      this.getData()      
-      this.setState({                     
-                    rockstar : new Sound(this.soundArray[val], Sound.MAIN_BUNDLE) ,
+  modalBackPressAction(){  
+      this.getData('storageDuration')    
+      this.getData('storageSound')  
+      this.setState({                                         
                     settingsModalVisible:false,                 
                   })                   
   }
@@ -218,7 +219,7 @@ export default class Breath extends Component {
             </Button>
           </View>
           
-          <BreathModal modalTransferAsyncData={this.state.duration} modalProp={this.state.settingsModalVisible} modalBackPress={val=>{ this.modalBackPressAction(val)}}/>
+          <BreathModal modalTransferAsyncData={this.state.duration} modalProp={this.state.settingsModalVisible} modalBackPress={()=>{ this.modalBackPressAction()}}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
       
       </View>      
