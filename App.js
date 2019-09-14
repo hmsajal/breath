@@ -8,16 +8,24 @@ export default class App extends Component {
 
   constructor(props){
     super(props)
-    this.appAsync()
+      this.appAsyncGet()
   }
 
-  appAsync=async ()=>{
-    await AsyncStorage.setItem('storageDuration','8')
-     AsyncStorage.setItem('storageSound','1')             
- }
 
-  render() {
-    return (
+  appAsyncSet=async ()=>{
+     AsyncStorage.setItem('storageDuration','8')
+          AsyncStorage.setItem('storageSound','1')                       
+  }
+
+ appAsyncGet=async ()=>{
+    const value = await AsyncStorage.getItem('storageDuration')        
+    if(value == null){
+      this.appAsyncSet()
+    }
+}
+
+  render() {    
+    return (      
       <Breath/>
     );
   }

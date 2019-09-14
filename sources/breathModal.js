@@ -44,8 +44,7 @@ export default class BreathModal extends Component {
             this.setState({durationValue:parseInt(value)}) 
                             :
             this.setState({selectedSoundValue:parseInt(value)})         
-      }   
-      console.log(this.state.durationValue)        
+      }          
     } 
     catch(e) {
       // error reading value
