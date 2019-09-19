@@ -7,8 +7,7 @@ export default class DurationManagement extends Component {
     constructor(props){
       super(props)     
       width=Dimensions.get('window').width
-      height=Dimensions.get('window').height
-      
+      height=Dimensions.get('window').height      
       this.state={
           currentValue:this.props.parentDuration
       }

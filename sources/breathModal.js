@@ -20,16 +20,17 @@ export default class BreathModal extends Component {
   
 
   storeData = async (storeVal) => {
-        try {
-              await 
-                  (
-                  
-                              storeVal==='storageDuration'
-                                          ?
-                          AsyncStorage.setItem(storeVal, this.state.durationValue+'')   
-                                          :
-                  AsyncStorage.setItem(storeVal,this.state.selectedSoundValue+'')       
-                  )
+        try {              
+                  await 
+                    (
+                    
+                                storeVal==='storageDuration'
+                                            ?
+                            AsyncStorage.setItem(storeVal, this.state.durationValue+'')   
+                                            :
+                    AsyncStorage.setItem(storeVal,this.state.selectedSoundValue+'')       
+                    )
+                
         } 
         catch (e) {      
         }
@@ -63,7 +64,7 @@ export default class BreathModal extends Component {
 
   render() {
     return (
-      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.savingFunction()}} onShow={()=>{this.setState({durationValue:this.props.modalTransferAsyncData})}}>
+      <Modal visible={this.props.modalProp} onRequestClose={()=>{this.savingFunction()}}>
           <View style={{backgroundColor:'#ffffe0', flex:1}}>
               <View style={{flex:.1,justifyContent:'center',borderBottomWidth:2,borderBottomColor:'#aaaaaa',
                             width:width-30,alignSelf:'center'

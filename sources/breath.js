@@ -219,7 +219,7 @@ export default class Breath extends Component {
             </Button>
           </View>
           
-          <BreathModal modalTransferAsyncData={this.state.duration} modalProp={this.state.settingsModalVisible} modalBackPress={()=>{ this.modalBackPressAction()}}/>
+          <BreathModal modalProp={this.state.settingsModalVisible} modalBackPress={()=>{ this.modalBackPressAction()}}/>
           <AboutModal modalProp={this.state.aboutModalVisible} modalBackPress={()=>{this.setState({aboutModalVisible:false})}}/>
       
       </View>      
