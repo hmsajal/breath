@@ -54,7 +54,17 @@ export default class Breath extends Component {
          this.setState({duration:parseInt(value)}) 
                     :
          this.setState({rockstar : new Sound(this.soundArray[parseInt(value)], Sound.MAIN_BUNDLE)})
-      }            
+      }  
+      else{
+            if(getVal==='storageDuration'){
+                       this.setState({duration:8});
+                       await  AsyncStorage.setItem(getVal, '8')
+            }
+            else{
+                      this.setState({rockstar: new Sound(this.soundArray[1],Sound.MAIN_BUNDLE)});
+                      await AsyncStorage.setItem(getVal,'1')
+            }        
+      }          
     } 
     catch(e) {
       // error reading value

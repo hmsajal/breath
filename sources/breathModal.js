@@ -14,7 +14,7 @@ export default class BreathModal extends Component {
       
     }
     this.getData('storageDuration')
-    this.getData('storageSound')      
+    this.getData('storageSound')          
   }  
 
   
