@@ -45,12 +45,20 @@ export default class BreathModal extends Component {
             this.setState({durationValue:parseInt(value)}) 
                             :
             this.setState({selectedSoundValue:parseInt(value)})         
-      }          
+      }  
+      else{
+               getVal==='storageDuration'
+                        ?
+            this.setState({durationValue:8})
+                          :
+            this.setState({selectedSoundValue:1})  
+      }        
     } 
     catch(e) {
       // error reading value
     }
   }
+
 
   valueChangeFunc(value){
     this.setState({selectedSoundValue:value})           
