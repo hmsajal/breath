@@ -12,24 +12,54 @@ export default class AboutModal extends Component {
       <Modal visible={this.props.modalProp} onRequestClose={this.props.modalBackPress}>
           <View style={{backgroundColor:'#ffffe0', flex:1,alignItems:'center',paddingTop:10}}>
             
-            <View style={{flex:.4,justifyContent:'flex-start',width:(w-30)}}>
-              <View style={{flex:.22,justifyContent:'center'}}>
-                <Text style={{fontSize:20,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic'}}>About Developer</Text>
+            <View style={{flex:.3,justifyContent:'flex-start',width:(w-30),}}>
+              <View style={{flex:.2,justifyContent:'center',marginBottom:5}}>
+                <Text style={{fontSize:19,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic',borderBottomWidth:1,borderBottomColor:'#888888'}}>About Developer</Text>
               </View>
-              <View style={{flex:.78}}>
-                <Text style={{fontSize:15,marginBottom:5}}>I am <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',fontStyle:'italic'}}>Hasan Mahmud Sajal, </Text><Text style={{fontSize:15,marginBottom:5}}>a passionate application developer</Text></Text>                
-                <Text style={{fontSize:15,marginBottom:5}}>I basically play with <Text style={{color:'#22cc77',fontWeight:'bold',fontSize:16}}>JavaScript</Text></Text> 
-                <Text style={{fontSize:15,marginBottom:5}}>My favourite platform is <Text style={{color:'#dd6666',fontWeight:'bold',fontSize:16}}>React Native</Text></Text>                
-              </View>              
+              <View style={{flex:.65}}>
+                  <Text style={{fontSize:15}}>I am
+                        <Text style={{fontSize:16,fontWeight:'bold',alignSelf:'center',color:'#333333'}}> Hasan Mahmud Sajal, </Text>
+                        <Text style={{fontSize:15,marginBottom:5}}>a passionate application developer. </Text>
+                        <Text>I basically code in </Text>
+                        <Text style={{color:'#000000',fontWeight:'bold',fontSize:20,fontFamily:'cursive'}}>JavaScript</Text>
+                        <Text> and my favourite platform is </Text>
+                        <Text style={{color:'#000000',fontWeight:'bold',fontSize:20,fontFamily:'cursive'}}>React Native.</Text>
+                  </Text>                                             
+              </View>   
+              <View style={{flex:.15}}>
+                <Text style={{fontSize:16}}>Contact: <Text style={{color:'#000000',fontSize:15}}>sajal.hm@gmail.com</Text></Text>
+              </View>           
             </View>
 
-            <View style={{flex:.6,justifyContent:'flex-start',width:(w-30)}}>
-              <View style={{flex:.15,justifyContent:'center',}}>
-                <Text style={{fontSize:18,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic'}}>About breathing and this app</Text>
-              </View>              
-              <View flex={.85}>
-                <Text></Text>
-              </View>
+            <View style={{flex:.7,justifyContent:'flex-start',width:(w-30)}}>              
+                <View style={{flex:.1,justifyContent:'center',}}>
+                  <Text style={{fontSize:19,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic',borderBottomWidth:1,borderBottomColor:'#888888'}}>About breathing and this app</Text>
+                </View>   
+                <View flex={.9}>
+                      <View style={{marginBottom:6}}>
+                        <Text style={{fontSize:15}}>
+                            <Text style={{color:'#111111',fontSize:15}}>Deep Breathing </Text> or <Text style={{color:'#111111',fontSize:15}}> Breathing Technique </Text>is a practice which relieves our stress, makes our life more productive and joyful. This app <Text style={{color:'#000000',fontSize:19,fontFamily:'cursive'}}>Happy Breathing </Text>will help you with this practice as a personal tool. 
+                        </Text>
+                      </View >
+
+                      <View style={{marginBottom:6}}>
+                        <Text style={{fontSize:15}}>
+                            Set the duration of each breath and start breathing, a loop of time intervals labeled as 'Breathe in' and 'Breathe out' will be created. You can also notify yourself with a sound after each time interval. 
+                        </Text>
+                      </View>
+
+                      <View style={{marginBottom:2}}>
+                        <Text style={{fontSize:15}}>
+                            to know more about deep breathing:
+                        </Text>                   
+                      </View>  
+
+                      <View>
+                         <Text style={{fontSize:14,color:'#666666',fontStyle:'italic'}}>
+                            https://www.webmd.com/balance/stress-management/stress-relief-breathing-techniques
+                         </Text>
+                      </View>                  
+                </View>
             </View>
 
           </View>
