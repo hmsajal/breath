@@ -84,7 +84,7 @@ export default class Breath extends Component {
               this.state.buttonStatus==false
                           ? 
               
-              <Text style={{fontSize:100,fontFamily:'cursive',fontStyle:'italic'}}> {this.state.duration} sec </Text>             
+              <Text style={{fontSize:100,fontFamily:'cursive',color:'#335a5a'}}> {this.state.duration} sec </Text>             
                           :
             ( this.state.initialProgress===0 
                           ?
@@ -196,7 +196,7 @@ export default class Breath extends Component {
               </TouchableOpacity>
 
               <View style={styles.name}>
-                <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:26,color:'#11aaaa'}}>Happy Breathing</Text>
+                <Text style={{fontFamily:'cursive', fontWeight:'bold', fontSize:28,color:'#11aaaa'}}>Happy Breathing</Text>
               </View>            
               
               <TouchableOpacity style={styles.about} onPress={()=>{this.setState({aboutModalVisible:true})
@@ -243,7 +243,7 @@ const styles=StyleSheet.create({
     container:{
         flex:1,    
         alignItems:'center',
-        backgroundColor:'#cccc77'  
+        backgroundColor:'ffffbb'  
     },
     firstView:{
         flex:.12,
