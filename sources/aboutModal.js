@@ -12,7 +12,7 @@ export default class AboutModal extends Component {
       <Modal visible={this.props.modalProp} onRequestClose={this.props.modalBackPress}>
           <View style={{backgroundColor:'#ffffe0', flex:1,alignItems:'center',paddingTop:10}}>
             
-            <View style={{flex:.3,justifyContent:'flex-start',width:(w-30),}}>
+            <View style={{flex:.3,justifyContent:'flex-start',width:(w-30)}}>
               <View style={{flex:.2,justifyContent:'center',marginBottom:5}}>
                 <Text style={{fontSize:19,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic',borderBottomWidth:1,borderBottomColor:'#888888'}}>About Developer</Text>
               </View>
@@ -32,25 +32,31 @@ export default class AboutModal extends Component {
             </View>
 
             <View style={{flex:.7,justifyContent:'flex-start',width:(w-30)}}>              
-                <View style={{flex:.1,justifyContent:'center',}}>
+                <View style={{flex:.11,justifyContent:'center',}}>
                   <Text style={{fontSize:19,fontFamily:'tahoma',fontWeight:'bold',fontStyle:'italic',borderBottomWidth:1,borderBottomColor:'#888888'}}>About breathing and this app</Text>
                 </View>   
-                <View flex={.9}>
-                      <View style={{marginBottom:6}}>
+                <View flex={.89}>
+                      <View style={{marginBottom:7}}>
                         <Text style={{fontSize:15}}>
                             <Text style={{color:'#111111',fontSize:15}}>Deep Breathing </Text> or <Text style={{color:'#111111',fontSize:15}}> Breathing Technique </Text>is a practice which relieves our stress, makes our life more productive and joyful. This app <Text style={{color:'#000000',fontSize:19,fontFamily:'cursive'}}>Happy Breathing </Text>will help you with this practice as a personal tool. 
                         </Text>
                       </View >
 
-                      <View style={{marginBottom:6}}>
-                        <Text style={{fontSize:15}}>
-                            Set the duration of each breath and start breathing, a loop of time intervals labeled as 'Breathe in' and 'Breathe out' will be created. You can also notify yourself with a sound after each time interval. 
-                        </Text>
+                      <View style={{marginBottom:10}}>
+                          <Text style={{fontSize:15}}>
+                              --Set the duration of your choice for each breath from settings menu.
+                          </Text>                              
+                          <Text style={{fontSize:15}}>
+                              --Tap the start button and follow the app.
+                          </Text>
+                          <Text style={{fontSize:15}}>
+                              --That's it and it's that simple.
+                          </Text>
                       </View>
 
-                      <View style={{marginBottom:2}}>
+                      <View>
                         <Text style={{fontSize:15}}>
-                            to know more about deep breathing:
+                            To know more about deep breathing:
                         </Text>                   
                       </View>  
 
