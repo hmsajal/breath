@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions} from 'react-native';
+import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions,BackHandler,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Test from 'react-native-progress'
 import Sound from 'react-native-sound'
@@ -13,17 +13,16 @@ import AboutModal from './aboutModal'
 export default class Breath extends Component {
 
   constructor(props){
-    super(props);    
-    
+    super(props);        
+
     this.width = Dimensions.get('window').width
     this.w = this.width*.5    
     this.soundArray=["chinup.mp3","definite.mp3","graceful.mp3"]    
 
     this.getData('storageDuration') 
     this.getData('storageSound')
-
-    this.state={         
-         
+    
+    this.state={                  
       breatheInOut:['Breath in','Breathe out','Tap the START button & breathe',''],
       breatheBool:2,
       buttonStatus: false,
@@ -44,6 +43,21 @@ export default class Breath extends Component {
       }
     }     
   }  
+
+
+  onBackPress = () => {        
+      Alert.alert(
+        ' Exit From App ',
+        ' Do you want to exit From App ?',
+        [
+          { text: 'Yes', onPress: () =>{this.stopButtonAction(); BackHandler.exitApp()  } },
+          { text: 'No' }
+        ],
+        { cancelable: false },
+      );      
+      return true;
+  }
+
 
   getData = async (getVal) => {
     try {
@@ -128,9 +142,7 @@ export default class Breath extends Component {
 
 
    startButtonAction(){   
-    
-            
-    
+
             this.setState({buttonTitle:'                            Stop                              ',
                            buttonStatus:true,
                            breatheBool:0,
@@ -143,7 +155,7 @@ export default class Breath extends Component {
                            timesCountString:'Times Count: 0', 
                            increment:this.state.increProgressVal[this.state.initialProgress]                                             
             })                 
-            
+            BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
             this.manageTime()      
 
             root = setInterval(()=>{    
@@ -160,7 +172,8 @@ export default class Breath extends Component {
             
     }
 
-    stopButtonAction(){     
+    stopButtonAction(){ 
+          BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);    
           KeepAwake.deactivate()            
           clearInterval(child)
           clearInterval(root)
