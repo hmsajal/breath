@@ -84,7 +84,7 @@ export default class Breath extends Component {
               this.state.buttonStatus==false
                           ? 
               
-              <Text style={{fontSize:100,fontFamily:'cursive',color:'#335a5a'}}> {this.state.duration} sec </Text>             
+              <Text style={{fontSize:100,fontFamily:'cursive',color:'#305f5f'}}> {this.state.duration} sec </Text>             
                           :
             ( this.state.initialProgress===0 
                           ?
@@ -243,7 +243,7 @@ const styles=StyleSheet.create({
     container:{
         flex:1,    
         alignItems:'center',
-        backgroundColor:'ffffbb'  
+        backgroundColor:'#ffffc4'  
     },
     firstView:{
         flex:.12,
