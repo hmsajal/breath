@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Modal,Dimensions,Button} from 'react-native';
+import {Text, View, Modal,Dimensions,Button} from 'react-native';
 import {Picker} from 'native-base'
 import DurationManagement from './durationManagement.js'
 import AsyncStorage from '@react-native-community/async-storage'

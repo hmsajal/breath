@@ -15,7 +15,7 @@ export default class DurationManagement extends Component {
 
     minusFunc(){        
         
-        if(this.state.currentValue >5){
+        if(this.state.currentValue >3){
             this.props.currentValueTransfer(this.state.currentValue-1)
             this.setState({
                 currentValue:this.state.currentValue-1

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View,Button,TouchableOpacity,Dimensions,BackHandler,Alert} from 'react-native';
+import {StyleSheet, Text, View,Button,TouchableOpacity,Dimensions,BackHandler,Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import * as Test from 'react-native-progress'
 import Sound from 'react-native-sound'
@@ -256,7 +256,7 @@ const styles=StyleSheet.create({
     container:{
         flex:1,    
         alignItems:'center',
-        backgroundColor:'#ffffc4'  
+        backgroundColor:'#ffffbb'  
     },
     firstView:{
         flex:.12,
