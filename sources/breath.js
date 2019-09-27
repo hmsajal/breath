@@ -125,7 +125,7 @@ export default class Breath extends Component {
                                         breatheBool:3,                                                           
                                         })                                  
                           this.state.rockstar.play()     
-            },this.state.duration*1000+300)
+            },(this.state.duration*1000)+300)
             
             
             child=setInterval(()=>{                   
@@ -133,9 +133,9 @@ export default class Breath extends Component {
                           this.setState({barProgress:this.state.barProgress+this.state.increment})            
                   }        
                   else
-                      {                            
+                      {                                                     
                           clearInterval(child)                                                        
-                      }
+                      }                      
               },this.state.duration*30);
     }     
    
@@ -156,6 +156,7 @@ export default class Breath extends Component {
                            increment:this.state.increProgressVal[this.state.initialProgress]                                             
             })                 
             BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+            
             this.manageTime()      
 
             root = setInterval(()=>{    
